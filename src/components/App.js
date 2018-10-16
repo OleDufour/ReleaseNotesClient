@@ -5,6 +5,7 @@ import logo from './../logo.svg';
 import { actions } from './../actions/referenceData';
 import store from './../store/store';
 import Reference from './ReferenceComp';
+import SideMenu from './SideMenu';
 import './App.css';
 
 @observer
@@ -23,7 +24,7 @@ class App extends Component {
 
     return (
       <div className="App">
-
+<SideMenu/>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
