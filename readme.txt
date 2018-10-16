@@ -1,1 +1,1 @@
-https://github.com/OleDufour/ReleaseNotes
+https://github.com/OleDufour/ReleaseNotesClient
