@@ -23,9 +23,14 @@ class App extends Component {
   render() {
 
     return (
-      <div className="App">
-<SideMenu/>
-        <header className="App-header">
+      
+
+<div class="row">
+    <div class="col-md-4">
+    <SideMenu/>
+    </div>
+    <div class="col-md-8">
+    <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
@@ -40,7 +45,14 @@ class App extends Component {
             )};
         </select>
         }
-      </div>
+    </div>
+    
+  </div>
+
+
+
+      
+      
     );
   }
 }
