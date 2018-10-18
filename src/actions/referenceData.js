@@ -11,7 +11,7 @@ export  const  actions = {
 function getAllReferenceData() {
     relnotService.getReferenceData().then(response => {
        store.referenceData= response;
-       alert( store.referenceData)
+     //  alert( store.referenceData)
     })
 
 }

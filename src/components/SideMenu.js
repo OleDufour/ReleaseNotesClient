@@ -23,8 +23,10 @@ class SideMenu extends Component {
 
     return (
       <div className="App">
-ddddddddddddddddddddddddddddddddddddd
-       <select>Release</select>
+       <select class="form-control js-DisplayOn valid">Release</select>
+       <select class="form-control js-DisplayOn valid">Release</select>
+       <select class="form-control js-DisplayOn valid">Release</select>
+       <select class="form-control js-DisplayOn valid">Release</select>
       </div>
     );
   }

@@ -20,7 +20,7 @@ function getReferenceData () {
     })
     .catch(function (error) {
         // handle error
-        alert(error);
+       // alert(error);
       })
 
 }
