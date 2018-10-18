@@ -13,14 +13,14 @@ var url  = config.apiUrl;
 
 function getReferenceData () {
  
-  return  axios.get(config.apiUrl + '/users/GetAllDDL')
+  return  axios.get(config.apiUrl + '/api/Config')
     .then(response => {
     return response.data;
        
     })
     .catch(function (error) {
         // handle error
-       // alert(error);
+        alert(error);
       })
 
 }

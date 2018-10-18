@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    actions.getAllReferenceData();
+    // actions.getAllReferenceData();
   }
 
 
@@ -39,21 +39,10 @@ class App extends Component {
             <p className="App-intro">
               To get started, edit <code>src/App.js</code> and save to reload.jjjjj hhh
         </p>
-            {store.referenceData && store.referenceData.length > 0 &&
-              <select name='abc'>
-                {store.referenceData.map(ref =>
-                  <option key={ref.id} value={ref.id}>{ref.value}</option>
-                )};
-        </select>
-            }
+           
           </div>
         </div>
       </div>
-
-
-
-
-
     );
   }
 }

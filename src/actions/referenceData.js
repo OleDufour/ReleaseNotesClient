@@ -7,7 +7,7 @@ export  const  actions = {
     getAllReferenceData
 }
 
-  // what's the use ?
+  
 function getAllReferenceData() {
     relnotService.getReferenceData().then(response => {
        store.referenceData= response;

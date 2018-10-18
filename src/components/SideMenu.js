@@ -4,7 +4,7 @@ import { observer } from "mobx-react"
 import logo from './../logo.svg';
 import { actions } from './../actions/referenceData';
 import store from './../store/store';
-import Reference from './ReferenceComp';
+
 import './App.css';
 
 @observer
@@ -15,7 +15,7 @@ class SideMenu extends Component {
   }
 
   componentDidMount() {
-   // actions.getAllReferenceData();
+    actions.getAllReferenceData();
   }
 
 
@@ -23,10 +23,16 @@ class SideMenu extends Component {
 
     return (
       <div className="App">
-       <select class="form-control js-DisplayOn valid">Release</select>
-       <select class="form-control js-DisplayOn valid">Release</select>
-       <select class="form-control js-DisplayOn valid">Release</select>
-       <select class="form-control js-DisplayOn valid">Release</select>
+        {store.countryCodes && store.countryCodes.length > 0 &&
+          <select className="form-control js-DisplayOn valid">
+            {store.countryCodes.map(ref =>
+              <option key={ref.id} value={ref.id}>{ref.name}</option>
+            )};
+           </select>
+        }
+        <select class="form-control js-DisplayOn valid">Release</select>
+        <select class="form-control js-DisplayOn valid">Release</select>
+        <select class="form-control js-DisplayOn valid">Release</select>
       </div>
     );
   }
