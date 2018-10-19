@@ -1,18 +1,17 @@
 import { observable, computed } from "mobx";
 
 
-// must be declared in class:
-
 class Store {
     @observable referenceData;
-    @computed get countryCodes () {
-        return this.referenceData.filter(x => x.propertyName === "CountryCode");
-    }
+
+    @computed get releases() { return this.referenceData.filter(x => x.propertyName === "Release"); }
+    @computed get countryCodes() { return this.referenceData.filter(x => x.propertyName === "CountryCode"); }
+    @computed get environments() { return this.referenceData.filter(x => x.propertyName === "Environment"); }
+    @computed get cleTypes() { return this.referenceData.filter(x => x.propertyName === "CleType"); }
+
     constructor(referenceData = []) {
         this.referenceData = referenceData;
-
     }
-
 }
 
 

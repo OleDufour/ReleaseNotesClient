@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { observer } from "mobx-react"
-// import { action } from "mobx";
 import logo from './../logo.svg';
 import { actions } from './../actions/referenceData';
-import store from './../store/store';
-import Reference from './ReferenceComp';
-import SideMenu from './SideMenu';
+
+// components
 import NavBar from './NavBar';
+import SideMenu from './SideMenu';
+import Add from './Add';
 import './App.css';
 
 @observer
@@ -27,19 +27,19 @@ class App extends Component {
       <div class="container-fluid">
         <NavBar />
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-2">
             <SideMenu />
           </div>
-          <div class="col-md-9">
-            <header className="App-header">
+          <div class="col-md-10">
+            <Add />
+            <div>
               {/* <img src={logo} className="App-logo" alt="logo" />*/}
-              <h1 className="App-title">o Releasenotes</h1>
-            </header>
-            <Reference />
+              <code>o Releasenotes</code>
+            </div>
             <p className="App-intro">
-              To get started, edit <code>src/App.js</code> and save to reload.jjjjj hhh
-        </p>
-           
+              <code>src/App.js</code>
+            </p>
+
           </div>
         </div>
       </div>
