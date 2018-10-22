@@ -18,11 +18,19 @@ export default class SideMenu extends Component {
     actions.getAllReferenceData();
   }
 
+  handleInputChange(event) {
+    console.log(store);
+console.log(     store.countryCodes[0].name="abc");
+  }
+
+
   render() {
 
     return (
       <div className="App">
-         {store.releases && store.releases.length > 0 &&
+
+        todo HOC element hier voor maken
+        {store.releases && store.releases.length > 0 &&
           <select className="form-control js-DisplayOn valid">
             {store.releases.map(ref =>
               <option key={ref.id} value={ref.id}>{ref.name}</option>
@@ -30,16 +38,25 @@ export default class SideMenu extends Component {
            </select>
         }
         {store.countryCodes && store.countryCodes.length > 0 &&
-          <select className="form-control js-DisplayOn valid">
+          <table multiple  >
             {store.countryCodes.map(ref =>
-              <option key={ref.id} value={ref.id}>{ref.name}</option>
+              <tr selected="selected" key={ref.id} ><td><input type="checkbox" defaultChecked= {ref.selected} onChange={this.handleInputChange}></input></td><td>{ref.id}{ref.name}</td></tr>
             )};
-           </select>
+        
+          </table>
         }
-        {store.environments && store.environments.length > 0 &&
-          <select className="form-control js-DisplayOn valid">
+        {/*   {store.countryCodes && store.countryCodes.length > 0 &&
+          <table multiple className="form-control js-DisplayOn valid">
+            {store.countryCodes.map(ref =>
+              <tr selected="selected" key={ref.id} ><td><input type="checkbox" checked></input></td><td>{ref.id}{ref.name}</td></tr>
+            )};
+            <input type="checkbox" defaultChecked={true} onChange={this.handleChangeChk} />
+           </table>
+        }*/}
+        {/* {store.environments && store.environments.length > 0 &&
+          <select multiple className="form-control js-DisplayOn valid">
             {store.environments.map(ref =>
-              <option key={ref.id} value={ref.id}>{ref.name}</option>
+              <option selected="selected" key={ref.id} value={ref.id}>{ref.name}</option>
             )};
            </select>
         }
@@ -49,10 +66,10 @@ export default class SideMenu extends Component {
               <option key={ref.id} value={ref.id}>{ref.name}</option>
             )};
            </select>
-        }         
+        }          */}
       </div>
     );
   }
 }
 
- 
+
