@@ -1,5 +1,5 @@
 import React from 'react';
-const Add = () => {
+const AddComponent = () => {
     return <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
@@ -10,4 +10,4 @@ const Add = () => {
         </div>
     </div>
 }
-export default Add;
+export default AddComponent;
