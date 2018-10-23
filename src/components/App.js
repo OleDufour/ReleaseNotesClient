@@ -29,29 +29,21 @@ class App extends Component {
 
     return (
       <div class="container-fluid">
-      
-        <div class="row">
-          <div class="col-md-2">
-            <SideMenu />
-          </div>
-          <div class="col-md-10">
-            <Router>
-              <div>  <NavBar />
+        <Router>
+          <div>
+            <NavBar />
+            <br/>
+            <div class="row">
+              <div class="col-md-2">
+                <SideMenu />
+              </div>
+              <div class="col-md-6">
                 <Route path="/add" component={AddComponent} />
                 <Route path="/comment" component={CommentComponent} />
               </div>
-            </Router>
-
-            <div>
-              {/* <img src={logo} className="App-logo" alt="logo" />*/}
-              <code>o Releasenotes</code>
             </div>
-            <p className="App-intro">
-              <code>src/App.js</code>
-            </p>
-
           </div>
-        </div>
+        </Router>
       </div>
     );
   }

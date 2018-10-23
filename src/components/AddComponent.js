@@ -1,6 +1,9 @@
 import React from 'react';
 const AddComponent = () => {
     return <div class="input-group mb-3">
+       
+       <select className="form-control js-DisplayOn valid">
+       </select>
         <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
         </div>
