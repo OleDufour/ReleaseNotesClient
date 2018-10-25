@@ -8,8 +8,8 @@ import { actions } from './../actions/referenceData';
 import AddComponent from './AddComponent';
 import CommentComponent from './CommentsComponent';
 // components
-import NavBar from './NavBar';
-import SideMenu from './SideMenu';
+import NavBarComponent from './NavBarComponent';
+import SideMenuComponent from './SideMenuComponent';
 
 import './App.css';
 
@@ -31,11 +31,11 @@ class App extends Component {
       <div class="container-fluid">
         <Router>
           <div>
-            <NavBar />
+            <NavBarComponent />
             <br/>
             <div class="row">
               <div class="col-md-2">
-                <SideMenu />
+                <SideMenuComponent />
               </div>
               <div class="col-md-6">
                 <Route path="/add" component={AddComponent} />

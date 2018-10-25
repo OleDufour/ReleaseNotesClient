@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { observer } from "mobx-react"
 // import { action } from "mobx";
 import logo from './../logo.svg';
-import { actions } from './../actions/referenceData';
-import store from './../store/store';
+import { actions } from '../actions/referenceData';
+import store from '../store/store';
 
 import './App.css';
 
 @observer
-export default class SideMenu extends Component {
+export default class SideMenuComponent extends Component {
   constructor(props) {
     super(props);
     this.state = { refs: [] };

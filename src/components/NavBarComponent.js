@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import AddComponent from './AddComponent';
 import CommentComponent from './CommentsComponent';
 
-class NavBar extends Component {
+class NavBarComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -32,4 +32,4 @@ class NavBar extends Component {
 }
 
 
-export default NavBar;
+export default NavBarComponent;
