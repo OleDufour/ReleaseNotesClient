@@ -4,7 +4,7 @@ import store from '../store/store';
 
 
 export  const  actions = {
-    getAllReferenceData
+    getAllReferenceData, 
 }
 
   
@@ -15,3 +15,6 @@ function getAllReferenceData() {
     })
 
 }
+
+
+ 

@@ -3,7 +3,6 @@ import { observable, computed, action } from "mobx";
 
 class Store {
     @observable referenceData;
-
     @computed get releases() { return this.referenceData.filter(x => x.propertyName === "Release"); }
     @computed get countryCodesDefault() { return this.referenceData.map((obj) => { obj.selected = true; return obj; }).filter(x => x.propertyName === "CountryCode"); }
     @computed get countryCodes() { return this.referenceData.filter(x => x.propertyName === "CountryCode"); }
@@ -14,7 +13,6 @@ class Store {
     //     this.referenceData[5].selected = value;
   
     // }
-
     @computed get environmentsDefault() { return this.referenceData.map((obj) => { obj.selected = true; return obj; }).filter(x => x.propertyName === "Environment"); }
     @computed get environments() { return this.referenceData.filter(x => x.propertyName === "Environment"); }
     @computed get cleTypes() { return this.referenceData.map((obj) => { obj.selected = true; return obj; }).filter(x => x.propertyName === "CleType"); }
