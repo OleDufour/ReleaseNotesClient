@@ -24,20 +24,19 @@ class App extends Component {
     // actions.getAllReferenceData();
   }
 
-
   render() {
-
     return (
       <div class="container-fluid">
         <Router>
           <div>
             <NavBarComponent />
-            <br/>
+            <br />
             <div class="row">
               <div class="col-md-2">
                 <SideMenuComponent />
               </div>
               <div class="col-md-6">
+                <Route path="/" exact component={AddComponent} />
                 <Route path="/add" component={AddComponent} />
                 <Route path="/comment" component={CommentComponent} />
               </div>

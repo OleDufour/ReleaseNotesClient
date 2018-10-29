@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { actions } from '../actions/referenceData';
-import { relnotService } from '../service/relnot';
+import { relnotService } from '../service/relnotService';
 
 class CommentComponent extends Component {
     constructor(props) {
@@ -20,7 +20,7 @@ class CommentComponent extends Component {
 
     handleClick = (event) => {
         relnotService.AddComment( this.state.value);
-        alert('An essay was submitted: ' + this.state.value);
+    //    alert('An essay was submitted: ' + this.state.value);
         event.preventDefault();
     };
 

@@ -3,7 +3,8 @@ import { observer } from "mobx-react"
 // import { action } from "mobx";
 import logo from './../logo.svg';
 import { actions } from '../actions/referenceData';
-import store from '../store/store';
+import referenceStore from '../store/ReferenceStore';
+
 
 import './App.css';
 
@@ -11,32 +12,36 @@ import './App.css';
 export default class SideMenuComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { refs: [] };
+
+
+
+
     this.updateSelectedCountryCode = this.updateSelectedCountryCode.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
     actions.getAllReferenceData();
+
+
   }
 
   handleInputChange(event) {
-    // console.log(event );
-    // console.log(event.target );
-    // console.log(event.target.attributes.getNamedItem('data-refID').value );
-    // console.log(event.target.checked );
-    //alert(refID);
     this.updateSelectedCountryCode(event.target.attributes.getNamedItem('data-refID').value, event.target.checked);
-    console.log(store.countryCodes[0].id, store.countryCodes[0].selected);
-    console.log(store.countryCodes[1].id, store.countryCodes[1].selected);
-    console.log(store.countryCodes[2].id, store.countryCodes[2].selected);
-    console.log(store.countryCodes[3].id, store.countryCodes[3].selected);
-    console.log(store.countryCodes[4].id, store.countryCodes[4].selected);
-    console.log(store.countryCodes[5].id, store.countryCodes[5].selected);
+    console.log(referenceStore.countryCodes[0].id, referenceStore.countryCodes[0].selected);
+    console.log(referenceStore.countryCodes[1].id, referenceStore.countryCodes[1].selected);
+    console.log(referenceStore.countryCodes[2].id, referenceStore.countryCodes[2].selected);
+    console.log(referenceStore.countryCodes[3].id, referenceStore.countryCodes[3].selected);
+    console.log(referenceStore.countryCodes[4].id, referenceStore.countryCodes[4].selected);
+    console.log(referenceStore.countryCodes[5].id, referenceStore.countryCodes[5].selected);
+
+    console.log('this.countryCodesDefault');
+    console.log(this.countryCodesDefault);
+
   }
 
   updateSelectedCountryCode(refID, value) {
-    store.referenceData.map(ref => {
+    referenceStore.referenceData.map(ref => {
       if (ref.propertyName == "CountryCode" && ref.id == refID) {
         // alert(value);
         ref.selected = value;
@@ -55,28 +60,45 @@ export default class SideMenuComponent extends Component {
   //const ul={  list-style: none;}
 
   render() {
+    var countryCodesDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode");
+    console.log(countryCodesDefault.filter(x => x.selected === true).length);
+
 
     return (
       <div className="App">
-
-        {store.releases && store.releases.length > 0 &&
+        {referenceStore.releases && referenceStore.releases.length > 0 &&
           <select className="form-control js-DisplayOn valid">
-            {store.releases.map(ref =>
+            {referenceStore.releases.map(ref =>
               <option key={ref.id} value={ref.id}>{ref.name}</option>
             )};
            </select>
         }
-        {store.cleTypes && store.cleTypes.length > 0 &&
+        {referenceStore.cleTypes && referenceStore.cleTypes.length > 0 &&
           <select className="form-control js-DisplayOn valid">
-            {store.cleTypes.map(ref =>
+            {referenceStore.cleTypes.map(ref =>
               <option key={ref.id} value={ref.id}>{ref.name}</option>
             )};
            </select>
         }
 
-        {store.countryCodesDefault && store.countryCodesDefault.length > 0 &&
+        {/* {referenceStore.countryCodesDefault && referenceStore.countryCodesDefault.length > 0 &&
           <table>
-            {store.countryCodesDefault.map(ref =>
+            {referenceStore.countryCodesDefault.map(ref =>
+              <tr selected="selected" key={ref.id}>
+                <td>
+                  <input type="checkbox" data-propertyName={ref.propertyName} data-refID={ref.id} defaultChecked={ref.selected} onChange={this.handleInputChange}></input>
+                </td><td>{ref.name}</td>
+              </tr>
+            )}
+          </table>
+        }
+      */}
+
+        nieuw :
+        todo : @computed get countryCodesDefault() weghalen
+ {countryCodesDefault && countryCodesDefault.length > 0 &&
+          <table>
+            {countryCodesDefault.map(ref =>
               <tr selected="selected" key={ref.id}>
                 <td>
                   <input type="checkbox" data-propertyName={ref.propertyName} data-refID={ref.id} defaultChecked={ref.selected} onChange={this.handleInputChange}></input>
@@ -86,8 +108,9 @@ export default class SideMenuComponent extends Component {
           </table>
         }
 
+
         <div>
-          {store.environmentsDefault.map(ref =>
+          {referenceStore.environmentsDefault.map(ref =>
             <div selected="selected" key={ref.id}>
 
               <input type="checkbox" data-propertyName={ref.propertyName} data-refID={ref.id} defaultChecked={ref.selected} onChange={this.handleInputChange}></input>

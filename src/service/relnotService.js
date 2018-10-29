@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { config } from '../config'
 
-
-
 export const relnotService = {
-  getReferenceData, 
-  AddComment
+  getReferenceData,
+  AddComment,
+  getComments,
+  postReleaseNote
 }
 
 var url = config.apiUrl;
@@ -18,15 +18,13 @@ function getReferenceData() {
 
     })
     .catch(function (error) {
-      // handle error
       alert(error);
     })
 }
 
 
 // Comments
-function AddComment  (comment) {
-
+function AddComment(comment) {
   axios.post(config.apiUrl + '/api/Comment', {
     Name: comment
   })
@@ -36,6 +34,22 @@ function AddComment  (comment) {
     .catch(function (error) {
       alert(error);
     });
+}
+
+function getComments() {
+  return axios.get(config.apiUrl + '/api/Comment' )
+    .then(response => {
+      return response.data;
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+}
+
+function postReleaseNote(){
+
+
 
 
 }
+ 
