@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import AddComponent from './AddComponent';
-import CommentComponent from './CommentsComponent';
+//import AddComponent from './AddComponent';
+//import CommentComponent from './CommentsComponent';
 
 class NavBarComponent extends Component {
   constructor(props) {
     super(props);
 
-    const { dispatch } = this.props;
+   // const { dispatch } = this.props;
     console.log(this.props);
 
   }

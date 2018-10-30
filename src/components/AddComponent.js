@@ -9,38 +9,66 @@ import ReferenceStore from '../store/ReferenceStore';
 export class AddComponent extends Component {
     constructor(props) {
         super(props)
-        
-       
-
         this.state = {
-            value: ''
+            commentID: '',
+            releaseNoteText: ''
         };
     }
 
     componentDidMount() {
-
         actions.getComments();
     }
 
+    // we are selecting a comment.
+    handleCommentChange = (event) => {
+        // console.log(event.target.value);
+        this.setState({ commentID: event.target.value });
+    }
+    // we are typing a new release note
     handleReleaseNoteChange = (event) => {
-
-        this.setState({ value: event.target.value });
+        this.setState({ releaseNoteText: event.target.value });
     }
 
+
+
+    // Clicking on the submit button. Creates a new release note.
+    // We are updating 
     handleReleaseNoteSave = (event) => {
+        var releaseNoteArray = [];
+        var releaseNote = {};
 
-       
+        console.log('commentid: ' + this.state.commentID);
 
-        actions.   postReleaseNote('','');
+        var countryCodesSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode").filter(x => x.selected === true).map(a => a.id);
+        var environmentsSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Environment").filter(x => x.selected === true).map(a => a.id);
+
+        environmentsSelected.forEach(idEnv => {
+            countryCodesSelected.forEach(idCountry => {
+                console.log(idEnv, idCountry);
+                releaseNote["CleTypeId"] = idCountry;
+                releaseNote["CountryCodeId"] = idCountry;
+                releaseNote["EnvironmentId"] = idEnv;
+                releaseNote["CommentId"] = this.state.commentID;
+                releaseNote["Value"] = this.state.releaseNoteText;
+                releaseNoteArray.push(releaseNote);
+                releaseNote = {}; // reinitialize the object
+            });
+        });
+
+        console.log('releaseNoteArray: ', releaseNoteArray);
+
+        actions.postReleaseNotes(this.state.commentID, this.state.releaseNoteText);
         event.preventDefault();
     }
 
     render() {
-        return (<div class="container mt-3">
+        // var commentStoreDefault = CommentStore.comments.unshift({ id: 0, name: '' });
+
+        return (<div className="container mt-3">
             {CommentStore.comments && CommentStore.comments.length > 0 &&
-                <div class="input-group mb-3">
-                    <div class="dropdown show">
-                        <select className="form-control js-DisplayOn valid">
+                <div className="input-group mb-3">
+                    <div className="dropdown show">
+                        <select className="form-control js-DisplayOn valid" onChange={this.handleCommentChange} >
                             {CommentStore.comments.map(com =>
                                 <option key={com.id} value={com.id}>{com.name}</option>
                             )};
@@ -53,7 +81,7 @@ export class AddComponent extends Component {
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
                 </div>
-                <input type="text" value={this.state.value} onChange={this.handleReleaseNoteChange} class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" />
+                <input type="text" value={this.state.releaseNoteText} onChange={this.handleReleaseNoteChange} class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" />
                 <div class="input-group-append">
                     <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">Save</button>
                 </div>

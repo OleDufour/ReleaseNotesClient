@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { config } from '../config'
 
+// used in actions/referenceData
 export const relnotService = {
   getReferenceData,
   AddComment,
   getComments,
-  postReleaseNote
+  postReleaseNotes
 }
-
-var url = config.apiUrl;
 
 
 function getReferenceData() {
@@ -46,10 +45,48 @@ function getComments() {
     });
 }
 
-function postReleaseNote(){
+/* Example
+[
+  {
+  "id": 0,
+  "countryCodeId": 0,
+  "environmentId": 0,
+  "cleTypeId": 0,
+  "releaseId": 0,
+  "commentId": 0,
+  "value": null 
+  },
+  {
+  "id": 0,
+  "countryCodeId": 0,
+  "environmentId": 0,
+  "cleTypeId": 0,
+  "releaseId": 0,
+  "commentId": 0,
+  "value": null 
+  }
+]
+ */ 
+var test =
+{
+  "id": 0,
+  "countryCodeId": 0,
+  "environmentId": 0,
+  "cleTypeId": 0,
+  "releaseId": 0,
+  "commentId": 0,
+  "value": null 
+  }
 
-
-
-
+function postReleaseNotes(){
+  axios.post(config.apiUrl + '/api/ReleaseNote', {
+    ReleaseNote: test
+  })
+    .then(function (response) {
+      alert(response);
+    })
+    .catch(function (error) {
+      alert(error);
+    });
 }
  

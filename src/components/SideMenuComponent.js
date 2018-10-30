@@ -16,7 +16,7 @@ export default class SideMenuComponent extends Component {
 
 
 
-    this.updateSelectedCountryCode = this.updateSelectedCountryCode.bind(this);
+    this.selectUnselectReferenceData = this.selectUnselectReferenceData.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
@@ -27,93 +27,69 @@ export default class SideMenuComponent extends Component {
   }
 
   handleInputChange(event) {
-    this.updateSelectedCountryCode(event.target.attributes.getNamedItem('data-refID').value, event.target.checked);
-    console.log(referenceStore.countryCodes[0].id, referenceStore.countryCodes[0].selected);
-    console.log(referenceStore.countryCodes[1].id, referenceStore.countryCodes[1].selected);
-    console.log(referenceStore.countryCodes[2].id, referenceStore.countryCodes[2].selected);
-    console.log(referenceStore.countryCodes[3].id, referenceStore.countryCodes[3].selected);
-    console.log(referenceStore.countryCodes[4].id, referenceStore.countryCodes[4].selected);
-    console.log(referenceStore.countryCodes[5].id, referenceStore.countryCodes[5].selected);
+    alert(event.target.attributes.getNamedItem('data-propertyname').value);
+    var refID;
+    if (event.target.attributes.getNamedItem('data-propertyname').value === 'Release')
+      refID = event.target.value;
+    else
+      refID = event.target.attributes.getNamedItem('data-refid').value;
 
-    console.log('this.countryCodesDefault');
-    console.log(this.countryCodesDefault);
+      alert (refID);
+
+    var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
+    this.selectUnselectReferenceData(propertyName, refID, event.target.checked);
+    //  console.log(referenceStore.referenceDataDefault.filter(x => x.selected == true));
+
 
   }
 
-  updateSelectedCountryCode(refID, value) {
+  // selected/unselect reference data.
+  selectUnselectReferenceData(propertyName, refID, value) {
     referenceStore.referenceData.map(ref => {
-      if (ref.propertyName == "CountryCode" && ref.id == refID) {
+      if (ref.propertyName == propertyName && ref.id == refID) {
         // alert(value);
         ref.selected = value;
       }
-    }
-    )
-    // for (var i = 0; i < store.referenceData.length; i++) {
-    //   if (store.referenceData[i].propertyName === "CountryCode" && store.referenceData[i].id == refID) {
-    //     alert(store.referenceData[i].name);
-    //     store.referenceData[i].selected = value
-    //   }
-    // }
-    // return store.referenceData;
+    })
   }
 
-  //const ul={  list-style: none;}
-
   render() {
-    var countryCodesDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode");
-    console.log(countryCodesDefault.filter(x => x.selected === true).length);
+    var releaseAdd = { id: 0, name: '(Select a release)' }
+    var releaseDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "Release");
+    releaseDefault.unshift(releaseAdd);
 
+    var countryCodesDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode");
+    var environmentDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "Environment");
 
     return (
       <div className="App">
-        {referenceStore.releases && referenceStore.releases.length > 0 &&
-          <select className="form-control js-DisplayOn valid">
-            {referenceStore.releases.map(ref =>
-              <option key={ref.id} value={ref.id}>{ref.name}</option>
-            )};
-           </select>
-        }
-        {referenceStore.cleTypes && referenceStore.cleTypes.length > 0 &&
-          <select className="form-control js-DisplayOn valid">
-            {referenceStore.cleTypes.map(ref =>
-              <option key={ref.id} value={ref.id}>{ref.name}</option>
-            )};
-           </select>
-        }
 
-        {/* {referenceStore.countryCodesDefault && referenceStore.countryCodesDefault.length > 0 &&
-          <table>
-            {referenceStore.countryCodesDefault.map(ref =>
-              <tr selected="selected" key={ref.id}>
-                <td>
-                  <input type="checkbox" data-propertyName={ref.propertyName} data-refID={ref.id} defaultChecked={ref.selected} onChange={this.handleInputChange}></input>
-                </td><td>{ref.name}</td>
-              </tr>
-            )}
-          </table>
-        }
-      */}
+        <select onChange={this.handleInputChange} data-propertyname="Release" className="form-control js-DisplayOn valid">
+          {releaseDefault.map(ref =>
+            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.id} </option>
+          )};
+        </select>
 
-        nieuw :
-        todo : @computed get countryCodesDefault() weghalen
- {countryCodesDefault && countryCodesDefault.length > 0 &&
-          <table>
-            {countryCodesDefault.map(ref =>
-              <tr selected="selected" key={ref.id}>
-                <td>
-                  <input type="checkbox" data-propertyName={ref.propertyName} data-refID={ref.id} defaultChecked={ref.selected} onChange={this.handleInputChange}></input>
-                </td><td>{ref.name}</td>
-              </tr>
-            )}
-          </table>
-        }
+        <select onChange={this.handleInputChange} className="form-control js-DisplayOn valid">
+          {referenceStore.cleTypes.map(ref =>
+            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name}</option>
+          )};
+        </select>
 
+        <table>
+          {countryCodesDefault.map(ref =>
+            <tr selected="selected" key={ref.id}>
+              <td>
+                <input type="checkbox" onChange={this.handleInputChange} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
+              </td><td>{ref.name}</td>
+            </tr>
+          )}
+        </table>
 
         <div>
-          {referenceStore.environmentsDefault.map(ref =>
+          {environmentDefault.map(ref =>
             <div selected="selected" key={ref.id}>
-
-              <input type="checkbox" data-propertyName={ref.propertyName} data-refID={ref.id} defaultChecked={ref.selected} onChange={this.handleInputChange}></input>
+              <input type="checkbox" onChange={this.handleInputChange} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
               {ref.name}
             </div>
           )}
@@ -124,5 +100,3 @@ export default class SideMenuComponent extends Component {
     );
   }
 }
-
-
