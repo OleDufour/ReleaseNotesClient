@@ -36,7 +36,7 @@ function AddComment(comment) {
 }
 
 function getComments() {
-  return axios.get(config.apiUrl + '/api/Comment' )
+  return axios.get(config.apiUrl + '/api/Comment')
     .then(response => {
       return response.data;
     })
@@ -66,22 +66,33 @@ function getComments() {
   "value": null 
   }
 ]
- */ 
-var test =
+ */
+var releaseNote2 =
 {
-  "id": 0,
-  "countryCodeId": 0,
+
+  "countryCodeId": 11111,
   "environmentId": 0,
   "cleTypeId": 0,
   "releaseId": 0,
   "commentId": 0,
-  "value": null 
-  }
+  "value": null
+}
 
-function postReleaseNotes(){
-  axios.post(config.apiUrl + '/api/ReleaseNote', {
-    ReleaseNote: test
-  })
+
+var ww = {
+  "CountryCodeId": 1,
+  "EnvironmentId": 0,
+  "CleTypeId": 0,
+  "ReleaseId": 0,
+  "CommentId": 0,
+  "Value": null
+}
+
+
+    //werkt : "countryCodeId":11111,"environmentId":22,"cleTypeId":0,"releaseId":1110,"commentId":0,"value":null 
+    
+function postReleaseNotes(releaseNoteArray) {
+  axios.post(config.apiUrl + '/api/ReleaseNote', {releaseNoteArray:  releaseNoteArray})
     .then(function (response) {
       alert(response);
     })
@@ -89,4 +100,3 @@ function postReleaseNotes(){
       alert(error);
     });
 }
- 

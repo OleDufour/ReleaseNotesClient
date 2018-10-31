@@ -4,6 +4,7 @@ import { observer } from "mobx-react"
 import { actions } from '../actions/referenceData';
 import CommentStore from '../store/CommentStore';
 import ReferenceStore from '../store/ReferenceStore';
+import { relnotService } from '../service/relnotService';
 
 @observer
 export class AddComponent extends Component {
@@ -34,21 +35,29 @@ export class AddComponent extends Component {
     // Clicking on the submit button. Creates a new release note.
     // We are updating 
     handleReleaseNoteSave = (event) => {
+        alert(ReferenceStore.selectedReleaseID);
+
         var releaseNoteArray = [];
         var releaseNote = {};
 
         console.log('commentid: ' + this.state.commentID);
 
+
+        var test = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
+        console.log('release', test[0]);
+
+        var releaseSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
         var countryCodesSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode").filter(x => x.selected === true).map(a => a.id);
         var environmentsSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Environment").filter(x => x.selected === true).map(a => a.id);
 
         environmentsSelected.forEach(idEnv => {
             countryCodesSelected.forEach(idCountry => {
                 console.log(idEnv, idCountry);
-                releaseNote["CleTypeId"] = idCountry;
+                releaseNote["ReleaseId"] = parseInt(ReferenceStore.selectedReleaseID);
+                releaseNote["CleTypeId"] = parseInt(ReferenceStore.selectedCleTypeID);
                 releaseNote["CountryCodeId"] = idCountry;
                 releaseNote["EnvironmentId"] = idEnv;
-                releaseNote["CommentId"] = this.state.commentID;
+                releaseNote["CommentId"] =  parseInt(this.state.commentID);
                 releaseNote["Value"] = this.state.releaseNoteText;
                 releaseNoteArray.push(releaseNote);
                 releaseNote = {}; // reinitialize the object
@@ -57,7 +66,7 @@ export class AddComponent extends Component {
 
         console.log('releaseNoteArray: ', releaseNoteArray);
 
-        actions.postReleaseNotes(this.state.commentID, this.state.releaseNoteText);
+        relnotService.postReleaseNotes(releaseNoteArray);
         event.preventDefault();
     }
 

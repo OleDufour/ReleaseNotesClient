@@ -39,6 +39,8 @@ class App extends Component {
                 <Route path="/" exact component={AddComponent} />
                 <Route path="/add" component={AddComponent} />
                 <Route path="/comment" component={CommentComponent} />
+
+            
               </div>
             </div>
           </div>

@@ -13,38 +13,50 @@ export default class SideMenuComponent extends Component {
   constructor(props) {
     super(props);
 
-
-
-
     this.selectUnselectReferenceData = this.selectUnselectReferenceData.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputChangeSingleSelect = this.handleInputChangeSingleSelect.bind(this);
+    this.handleInputChangeMultiSelect = this.handleInputChangeMultiSelect.bind(this);
   }
 
   componentDidMount() {
     actions.getAllReferenceData();
-
-
   }
 
-  handleInputChange(event) {
-    alert(event.target.attributes.getNamedItem('data-propertyname').value);
-    var refID;
-    if (event.target.attributes.getNamedItem('data-propertyname').value === 'Release')
-      refID = event.target.value;
-    else
-      refID = event.target.attributes.getNamedItem('data-refid').value;
+  handleInputChangeSingleSelect(event) {
 
-      alert (refID);
+    var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
+    alert(propertyName);
+    var refID = event.target.value;
+
+    switch (propertyName) {
+      case "Release":
+        referenceStore.selectedReleaseID = refID; break;
+      case "CleType":
+        referenceStore.selectedCleTypeID = refID; break;
+    }
+
+    //    this.selectUnselectReferenceDataSingleSelect(propertyName, refID);
+    //  console.log('referenceDataDefault**', referenceStore.referenceDataDefault);
+  }
+
+
+  handleInputChangeMultiSelect(event) {
+    alert(event.target.attributes.getNamedItem('data-propertyname').value);
+
+    var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
+
+    var refID = event.target.attributes.getNamedItem('data-refid').value;
+
+    // alert(propertyName + ' ' + refID);
 
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
     this.selectUnselectReferenceData(propertyName, refID, event.target.checked);
-    //  console.log(referenceStore.referenceDataDefault.filter(x => x.selected == true));
-
 
   }
 
   // selected/unselect reference data.
   selectUnselectReferenceData(propertyName, refID, value) {
+
     referenceStore.referenceData.map(ref => {
       if (ref.propertyName == propertyName && ref.id == refID) {
         // alert(value);
@@ -53,10 +65,22 @@ export default class SideMenuComponent extends Component {
     })
   }
 
+  selectUnselectReferenceDataSingleSelect(propertyName, refID) {
+    referenceStore.referenceData.map(ref => {
+      if (ref.propertyName == propertyName) {
+        ref.selected = ref.id == refID ? true : false;
+      }
+    })
+  }
+
+
+
   render() {
-    var releaseAdd = { id: 0, name: '(Select a release)' }
+    var releaseAdd = { id: 0, name: '' }
     var releaseDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "Release");
     releaseDefault.unshift(releaseAdd);
+
+    var cleTypesDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "CleType");
 
     var countryCodesDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode");
     var environmentDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "Environment");
@@ -64,15 +88,15 @@ export default class SideMenuComponent extends Component {
     return (
       <div className="App">
 
-        <select onChange={this.handleInputChange} data-propertyname="Release" className="form-control js-DisplayOn valid">
+        <select onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
           {releaseDefault.map(ref =>
-            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.id} </option>
+            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
           )};
         </select>
 
-        <select onChange={this.handleInputChange} className="form-control js-DisplayOn valid">
-          {referenceStore.cleTypes.map(ref =>
-            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name}</option>
+        <select onChange={this.handleInputChangeSingleSelect} data-propertyname="CleType" className="form-control js-DisplayOn valid">
+          {cleTypesDefault.map(ref =>
+            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name} + {ref.selected}</option>
           )};
         </select>
 
@@ -80,7 +104,7 @@ export default class SideMenuComponent extends Component {
           {countryCodesDefault.map(ref =>
             <tr selected="selected" key={ref.id}>
               <td>
-                <input type="checkbox" onChange={this.handleInputChange} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
+                <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
               </td><td>{ref.name}</td>
             </tr>
           )}
@@ -89,7 +113,7 @@ export default class SideMenuComponent extends Component {
         <div>
           {environmentDefault.map(ref =>
             <div selected="selected" key={ref.id}>
-              <input type="checkbox" onChange={this.handleInputChange} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
+              <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
               {ref.name}
             </div>
           )}
