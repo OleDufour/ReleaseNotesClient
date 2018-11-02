@@ -6,7 +6,8 @@ export const relnotService = {
   getReferenceData,
   AddComment,
   getComments,
-  postReleaseNotes
+  postReleaseNotes,
+  getReleaseNotes
 }
 
 
@@ -14,7 +15,6 @@ function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
       return response.data;
-
     })
     .catch(function (error) {
       alert(error);
@@ -67,26 +67,6 @@ function getComments() {
   }
 ]
  */
-var releaseNote2 =
-{
-
-  "countryCodeId": 11111,
-  "environmentId": 0,
-  "cleTypeId": 0,
-  "releaseId": 0,
-  "commentId": 0,
-  "value": null
-}
-
-
-var ww = {
-  "CountryCodeId": 1,
-  "EnvironmentId": 0,
-  "CleTypeId": 0,
-  "ReleaseId": 0,
-  "CommentId": 0,
-  "Value": null
-}
 
 
     //werkt : "countryCodeId":11111,"environmentId":22,"cleTypeId":0,"releaseId":1110,"commentId":0,"value":null 
@@ -95,6 +75,16 @@ function postReleaseNotes(releaseNoteArray) {
   axios.post(config.apiUrl + '/api/ReleaseNote', {releaseNoteArray:  releaseNoteArray})
     .then(function (response) {
       alert(response);
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+}
+
+function getReleaseNotes() {
+  return axios.get(config.apiUrl + '/api/ReleaseNote')
+    .then(response => {
+      return response.data;
     })
     .catch(function (error) {
       alert(error);

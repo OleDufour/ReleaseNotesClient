@@ -10,6 +10,8 @@ import CommentComponent from './CommentsComponent';
 // components
 import NavBarComponent from './NavBarComponent';
 import SideMenuComponent from './SideMenuComponent';
+import ReleaseNoteListComponent from './ReleaseNoteListComponent';
+
 
 import './App.css';
 
@@ -39,8 +41,8 @@ class App extends Component {
                 <Route path="/" exact component={AddComponent} />
                 <Route path="/add" component={AddComponent} />
                 <Route path="/comment" component={CommentComponent} />
+                <Route path="/preview" component={ReleaseNoteListComponent} />
 
-            
               </div>
             </div>
           </div>

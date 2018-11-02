@@ -1,5 +1,5 @@
-import { observable, computed } from "mobx";
-
+import { observable, computed, action } from "mobx";
+import { relnotService } from '../service/relnotService';
 
 class ReferenceStore {
     @observable referenceData;
@@ -16,13 +16,34 @@ class ReferenceStore {
 
     // updated when we select a Release :
     selectedReleaseID=0;
-
     // updated when we select a CleType :
     selectedCleTypeID=0;
 
     constructor(referenceData = []) {
         this.referenceData = referenceData;
     }
+
+
+     getAllReferenceData() {
+        relnotService.getReferenceData().then(response => {
+            this.referenceData = response;
+            // alert(ReferenceStore.referenceData .length)
+        })
+    }
+
+   // see  https://egghead.io/lessons/react-use-mobx-actions-to-change-and-guard-state
+   @action selectUnselectReferenceData(propertyName, refID, value) {
+// alert ('action')
+        this.referenceData.map(ref => {
+          if (ref.propertyName == propertyName && ref.id == refID) {
+            // alert(value);
+            ref.selected = value;
+          }
+        })
+      }
+
+
+
 }
 
 

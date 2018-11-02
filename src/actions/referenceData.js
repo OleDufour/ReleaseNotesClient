@@ -1,24 +1,22 @@
 
-
-
 import { relnotService } from '../service/relnotService';
 import ReferenceStore from '../store/ReferenceStore';
 import CommentStore from '../store/CommentStore';
 import { autorun } from 'mobx';
 
 export const actions = {
-    getAllReferenceData,
+   
     getComments,
     postReleaseNotes
 }
 
 
-function getAllReferenceData() {
-    relnotService.getReferenceData().then(response => {
-        ReferenceStore.referenceData = response;
-        // alert(ReferenceStore.referenceData .length)
-    })
-}
+// function getAllReferenceData() {
+//     relnotService.getReferenceData().then(response => {
+//         ReferenceStore.referenceData = response;
+//         // alert(ReferenceStore.referenceData .length)
+//     })
+// }
 
 
 function getComments() {

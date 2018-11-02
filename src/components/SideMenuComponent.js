@@ -19,7 +19,8 @@ export default class SideMenuComponent extends Component {
   }
 
   componentDidMount() {
-    actions.getAllReferenceData();
+    //actions.getAllReferenceData();
+    referenceStore.getAllReferenceData();
   }
 
   handleInputChangeSingleSelect(event) {
@@ -41,16 +42,14 @@ export default class SideMenuComponent extends Component {
 
 
   handleInputChangeMultiSelect(event) {
-    alert(event.target.attributes.getNamedItem('data-propertyname').value);
+
+    //alert(event.target.attributes.getNamedItem('data-propertyname').value);
 
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
-
     var refID = event.target.attributes.getNamedItem('data-refid').value;
 
-    // alert(propertyName + ' ' + refID);
-
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
-    this.selectUnselectReferenceData(propertyName, refID, event.target.checked);
+    referenceStore.selectUnselectReferenceData(propertyName, refID, event.target.checked);
 
   }
 
@@ -86,7 +85,7 @@ export default class SideMenuComponent extends Component {
     var environmentDefault = referenceStore.referenceDataDefault.filter(x => x.propertyName === "Environment");
 
     return (
-      <div className="App">
+      <div  >
 
         <select onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
           {releaseDefault.map(ref =>
@@ -110,14 +109,15 @@ export default class SideMenuComponent extends Component {
           )}
         </table>
 
-        <div>
+         <fieldset  >
+        <legend><h5>Environments</h5></legend>
           {environmentDefault.map(ref =>
             <div selected="selected" key={ref.id}>
               <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
               {ref.name}
             </div>
           )}
-        </div>
+        </fieldset>
 
 
       </div>
