@@ -26,6 +26,8 @@ class App extends Component {
     // actions.getAllReferenceData();
   }
 
+
+
   render() {
     return (
       <div class="container-fluid">
@@ -39,7 +41,7 @@ class App extends Component {
               </div>
               <div class="col-md-6">
                 <Route path="/" exact component={AddComponent} />
-                <Route path="/add" component={AddComponent} />
+             
                 <Route path="/comment" component={CommentComponent} />
                 <Route path="/preview" component={ReleaseNoteListComponent} />
 

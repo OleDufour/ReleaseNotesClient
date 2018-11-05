@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { observer } from "mobx-react"
-
+import { Map as iMap } from "immutable";
 import { actions } from '../actions/referenceData';
 import rn from '../store/ReleaseNoteStore';
-import ReferenceStore from '../store/ReferenceStore';
+import referenceStore from '../store/ReferenceStore';
 import ReleaseNote from '../store/ReleaseNoteStore';
 
 @observer
@@ -18,7 +18,11 @@ export class ListComponent extends Component {
 
     componentDidMount() {
         rn.getReleaseNotes();
-
+        alert ('list mount')
+           referenceStore.    referenceData.map((x)=>{x.selected=false; return x;});
+     
+        let rc = iMap(referenceStore)
+console.log("Values of observables in class 'referenceClass' ",rc.toJS());
     }
 
 

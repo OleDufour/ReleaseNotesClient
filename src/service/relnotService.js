@@ -14,7 +14,8 @@ export const relnotService = {
 function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
-      return response.data;
+     
+      return response.data.map((x) => { x.selected = true;return x; });
     })
     .catch(function (error) {
       alert(error);
