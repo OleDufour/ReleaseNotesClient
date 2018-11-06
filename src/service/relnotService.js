@@ -15,7 +15,7 @@ function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
      
-      return response.data.map((x) => { x.selected = true;return x; });
+      return response.data .map((x) => { x.selected = false;return x; });
     })
     .catch(function (error) {
       alert(error);

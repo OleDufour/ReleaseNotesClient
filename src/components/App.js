@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from "mobx-react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import createHistory from 'history/createBrowserHistory';
 
 import logo from './../logo.svg';
 import { actions } from './../actions/referenceData';
@@ -11,7 +12,7 @@ import CommentComponent from './CommentsComponent';
 import NavBarComponent from './NavBarComponent';
 import SideMenuComponent from './SideMenuComponent';
 import ReleaseNoteListComponent from './ReleaseNoteListComponent';
-
+import { BrowserRouter } from 'react-router-dom';
 
 import './App.css';
 
@@ -20,6 +21,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { refs: [] };
+    const history = createHistory();
+const unlisten = history.listen((location, action) => {
+  alert (location.pathname)
+  console.log(action, location.pathname, location.state)
+});
   }
 
   componentDidMount() {
@@ -31,7 +37,7 @@ class App extends Component {
   render() {
     return (
       <div class="container-fluid">
-        <Router>
+         <BrowserRouter>
           <div>
             <NavBarComponent />
             <br />
@@ -39,16 +45,18 @@ class App extends Component {
               <div class="col-md-2">
                 <SideMenuComponent />
               </div>
-              <div class="col-md-6">
+            
+             <div>
                 <Route path="/" exact component={AddComponent} />
              
                 <Route path="/comment" component={CommentComponent} />
                 <Route path="/preview" component={ReleaseNoteListComponent} />
-
-              </div>
+                </div>
+              
+            
             </div>
           </div>
-        </Router>
+          </BrowserRouter>
       </div>
     );
   }

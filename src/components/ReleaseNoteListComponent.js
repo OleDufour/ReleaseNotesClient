@@ -17,19 +17,22 @@ export class ListComponent extends Component {
     }
 
     componentDidMount() {
+        alert('list did mount')
         rn.getReleaseNotes();
-        alert ('list mount')
-           referenceStore.    referenceData.map((x)=>{x.selected=false; return x;});
-     
+
+        referenceStore.referenceData.map((x) => { x.selected = false; return x; });
+
         let rc = iMap(referenceStore)
-console.log("Values of observables in class 'referenceClass' ",rc.toJS());
+        console.log("Values of observables in class 'referenceClass' ", rc.toJS());
     }
 
-
-
+    componentDidUpdate(){
+        alert ('did update')
+    referenceStore.referenceData.map((x) => { x.selected = false; return x; });
+}
     render() {
         // var commentStoreDefault = CommentStore.comments.unshift({ id: 0, name: '' });
-
+       
         return (<div className="container mt-3">
             {ReleaseNote.allReleaseNotes && ReleaseNote.allReleaseNotes.length > 0 &&
                 <div>

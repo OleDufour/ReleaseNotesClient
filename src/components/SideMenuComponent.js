@@ -21,12 +21,12 @@ export default class SideMenuComponent extends Component {
   componentDidMount() {
     //actions.getAllReferenceData();
     referenceStore.getAllReferenceData();
-    alert ('sidemenu component did mount')
-    referenceStore.    referenceData.map((x)=>{x.selected=false; return x;});
+ 
+     
   }
 
   componentDidUpdate() {
-    alert ('sidemenu component did update')
+   
   }
 
   handleInputChangeSingleSelect(event) {
@@ -61,7 +61,7 @@ export default class SideMenuComponent extends Component {
 
   // selected/unselect reference data.
   selectUnselectReferenceData(propertyName, refID, value) {
-
+alert ('clicked')
     referenceStore.referenceData.map(ref => {
       if (ref.propertyName == propertyName && ref.id == refID) {
         // alert(value);
@@ -71,6 +71,7 @@ export default class SideMenuComponent extends Component {
   }
 
   selectUnselectReferenceDataSingleSelect(propertyName, refID) {
+    
     referenceStore.referenceData.map(ref => {
       if (ref.propertyName == propertyName) {
         ref.selected = ref.id == refID ? true : false;
@@ -81,10 +82,20 @@ export default class SideMenuComponent extends Component {
 
 
   render() {
-    alert ('sidemenu component render')
+  //  alert ('sidemenu component render')
     return (
       <div  >
-
+  <select onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
+          {referenceStore.releases.map(ref =>
+             <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
+           )};
+         </select>
+ 
+         <select onChange={this.handleInputChangeSingleSelect} data-propertyname="CleType" className="form-control js-DisplayOn valid">
+           {referenceStore.cleTypes.map(ref =>
+             <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name} + {ref.selected}</option>
+           )};
+         </select> 
        
         <table>
           {referenceStore.referenceData.map(ref =>
@@ -95,7 +106,27 @@ export default class SideMenuComponent extends Component {
             </tr>
           )}
         </table>
+  <table>
+          {referenceStore.countryCodesDefault.map(ref =>
+            <tr selected="selected" key={ref.id}>
+              <td>dddddddddd
+                <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id}  checked={ref.selected} ></input>
+              </td><td>{ref.name} {ref.selected.toString()}</td>
+            </tr>
+          )}
+        </table>
 
+{/*  
+         <fieldset  >
+        <legend><h5>Environments</h5></legend>
+          {environmentDefault.map(ref =>
+            <div selected="selected" key={ref.id}>
+              <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} ></input>
+              {ref.name}
+            </div>
+          )}
+    
+        </fieldset> */}
        
 
 

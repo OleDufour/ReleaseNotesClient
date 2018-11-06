@@ -17,6 +17,7 @@ export class AddComponent extends Component {
     }
 
     componentDidMount() {
+        alert('add did mount')
         actions.getComments();
     }
 
@@ -42,8 +43,8 @@ export class AddComponent extends Component {
 
         console.log('commentid: ' + this.state.commentID);
 
-
-        var test = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
+alert ('dd')
+       // var test = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
         console.log('release', test[0]);
 
         var releaseSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
