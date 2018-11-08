@@ -17,7 +17,7 @@ export class ListComponent extends Component {
     }
 
     componentDidMount() {
-        alert('list did mount')
+        // alert('list did mount')
         rn.getReleaseNotes();
 
         referenceStore.referenceData.map((x) => { x.selected = false; return x; });
@@ -26,32 +26,39 @@ export class ListComponent extends Component {
         console.log("Values of observables in class 'referenceClass' ", rc.toJS());
     }
 
-    componentDidUpdate(){
-        alert ('did update')
-    referenceStore.referenceData.map((x) => { x.selected = false; return x; });
-}
+    componentDidUpdate() {
+        alert('did update')
+        referenceStore.referenceData.map((x) => { x.selected = false; return x; });
+    }
     render() {
-        // var commentStoreDefault = CommentStore.comments.unshift({ id: 0, name: '' });
-       
         return (<div className="container mt-3">
+        <input placeholder="search" ></input>
+            Telkens 1 file tonen. Met back en forward buttons elke file browsen.<br/>
+Je bent telkens maar geinteresseerd in 1 key!!
             {ReleaseNote.allReleaseNotes && ReleaseNote.allReleaseNotes.length > 0 &&
-                <div>
-                    {ReleaseNote.allReleaseNotes.map(r =>
-                        <div selected="selected" key={r.id}>
-                            {r.value}
-                            <div><button title="Modifier" className="btnGrid btn-primary content-modify-link" data-toggle="modal" data-target="#myModal" data-itemid="188446"  >
-                                <span class="fa fa-pencil"></span>
-                            </button></div>
-                            <div>
-                                <button title="Supprimer" className="btnGrid btn-primary btn-warning content-remove-link"  >
-                                    <span class="fa fa-trash"></span>
-                                </button>
-                            </div>
-                        </div>
+                <table class="table" class="table table-striped table-bordered">
+                    <tbody>
+                        {ReleaseNote.allReleaseNotes.map(r =>
+                            <tr>
+                                {/* <div selected="selected" key={r.id}> */}
+                                <td>
+                                    {r.value}
+                                </td>
+                                <td>
+                                    <button title="Modifier" className="btnGrid btn-primary content-modify-link" >
+                                        <span class="fa fa-pencil">Modify</span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button title="Supprimer" className="btnGrid btn-primary btn-warning content-remove-link"  >
+                                        <span class="fa fa-trash">Delete</span>
+                                    </button>
+                                </td>
 
-
-                    )}
-                </div>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             }
         </div >);
     }

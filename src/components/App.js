@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { observer } from "mobx-react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
+import { BrowserRouter } from 'react-router-dom';
 
 import logo from './../logo.svg';
 import { actions } from './../actions/referenceData';
+
 
 import AddComponent from './AddComponent';
 import CommentComponent from './CommentsComponent';
@@ -12,7 +14,8 @@ import CommentComponent from './CommentsComponent';
 import NavBarComponent from './NavBarComponent';
 import SideMenuComponent from './SideMenuComponent';
 import ReleaseNoteListComponent from './ReleaseNoteListComponent';
-import { BrowserRouter } from 'react-router-dom';
+import DeleteComponent from './DeleteComponent';
+import DownloadComponent from './DownloadComponent';
 
 import './App.css';
 
@@ -22,14 +25,17 @@ class App extends Component {
     super(props);
     this.state = { refs: [] };
     const history = createHistory();
-const unlisten = history.listen((location, action) => {
-  alert (location.pathname)
-  console.log(action, location.pathname, location.state)
-});
+    const unlisten = history.listen((location, action) => {
+      alert(location.pathname)
+      console.log(action, location.pathname, location.state)
+    });
   }
 
   componentDidMount() {
     // actions.getAllReferenceData();
+ 
+
+
   }
 
 
@@ -37,7 +43,7 @@ const unlisten = history.listen((location, action) => {
   render() {
     return (
       <div class="container-fluid">
-         <BrowserRouter>
+        <BrowserRouter>
           <div>
             <NavBarComponent />
             <br />
@@ -45,18 +51,19 @@ const unlisten = history.listen((location, action) => {
               <div class="col-md-2">
                 <SideMenuComponent />
               </div>
-            
-             <div>
+
+              <div class="col-md-6">
                 <Route path="/" exact component={AddComponent} />
-             
+                <Route path="/delete" component={DeleteComponent} />
                 <Route path="/comment" component={CommentComponent} />
                 <Route path="/preview" component={ReleaseNoteListComponent} />
-                </div>
-              
-            
+                <Route path="/download" component={DownloadComponent} />
+              </div>
+
+
             </div>
           </div>
-          </BrowserRouter>
+        </BrowserRouter>
       </div>
     );
   }
