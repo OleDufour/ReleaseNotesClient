@@ -78,40 +78,52 @@ export default class SideMenuComponent extends Component {
     //  alert ('sidemenu component render')
     return (
       <div  >
-        <select onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
-          {referenceStore.releases.map(ref =>
-            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
-          )};
+        <div class="form-group">
+          <label for="selRelease">Release</label>
+          <select id="selRelease" onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
+            {referenceStore.releases.map(ref =>
+              <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
+            )};
          </select>
+        </div>
 
-        <select onChange={this.handleInputChangeSingleSelect} data-propertyname="CleType" className="form-control js-DisplayOn valid">
-          {referenceStore.cleTypes.map(ref =>
-            <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name}  {ref.selected}</option>
-          )};
+        <div class="form-group">
+          <label for="selCleType">Type de clé</label>
+          <select id="selCleType" onChange={this.handleInputChangeSingleSelect} data-propertyname="CleType" className="form-control js-DisplayOn valid">
+            {referenceStore.cleTypes.map(ref =>
+              <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name}  {ref.selected}</option>
+            )};
          </select>
+        </div>
 
-        <fieldset  >
-          <legend><h5>Countries</h5></legend>
-          {referenceStore.countryCodesDefault.map(ref =>
-            <tr selected="selected" key={ref.id}>
-              <td>
-                <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} checked={ref.selected} ></input>
-              </td><td>{ref.name} {ref.selected.toString()}</td>
-            </tr>
-          )}
-        </fieldset>
 
-        <fieldset  >
-          <legend><h5>Environments</h5></legend>
-          {referenceStore.environmentsDefault.map(ref =>
-            <tr selected="selected" key={ref.id}>
-              <td>
-                <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} checked={ref.selected} ></input>
-              </td><td>{ref.name} {ref.selected.toString()}</td>
-            </tr>
-          )}
-        </fieldset>
-      </div>
+        <div class="form-group">
+          <table>
+            <label >Countries</label>
+            {referenceStore.countryCodesDefault.map(ref =>
+              <tr selected="selected" key={ref.id}>
+                <td>
+                  <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} checked={ref.selected} ></input>
+                  &nbsp;&nbsp;{ref.name} {ref.selected.toString()}
+                </td>
+              </tr>
+            )}
+          </table>
+        </div>
+
+        <div class="form-group">
+          <table>
+            <label >Environments</label>
+
+            {referenceStore.environmentsDefault.map(ref =>
+              <tr selected="selected" key={ref.id}>
+                <td>
+                  <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} checked={ref.selected} ></input>
+                  &nbsp;&nbsp;{ref.name} {ref.selected.toString()}  </td>
+              </tr>
+            )}
+          </table>
+        </div>  </div>
     );
   }
 }

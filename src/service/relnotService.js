@@ -7,15 +7,17 @@ export const relnotService = {
   AddComment,
   getComments,
   postReleaseNotes,
-  getReleaseNotes
+  postReleaseNotes2,
+  getReleaseNotes,
+  searchReleaseNotes
 }
 
 
 function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
-     
-      return response.data .map((x) => { x.selected = false;return x; });
+
+      return response.data.map((x) => { x.selected = false; return x; });
     })
     .catch(function (error) {
       alert(error);
@@ -70,10 +72,10 @@ function getComments() {
  */
 
 
-    //werkt : "countryCodeId":11111,"environmentId":22,"cleTypeId":0,"releaseId":1110,"commentId":0,"value":null 
-    
+//werkt : "countryCodeId":11111,"environmentId":22,"cleTypeId":0,"releaseId":1110,"commentId":0,"value":null 
+
 function postReleaseNotes(releaseNoteArray) {
-  axios.post(config.apiUrl + '/api/ReleaseNote', {releaseNoteArray:  releaseNoteArray})
+  axios.post(config.apiUrl + '/api/ReleaseNote', { releaseNoteArray: releaseNoteArray })
     .then(function (response) {
       alert(response);
     })
@@ -82,9 +84,31 @@ function postReleaseNotes(releaseNoteArray) {
     });
 }
 
+function postReleaseNotes2(releaseNoteArray) {
+  axios.post(config.apiUrl + '/api/ReleaseNote', { releaseNoteArray: releaseNoteArray })
+    .then(function (response) {
+      alert(response);
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+}
+
+
 function getReleaseNotes() {
   return axios.get(config.apiUrl + '/api/ReleaseNote')
     .then(response => {
+      return response ;
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+}
+
+function searchReleaseNotes(releaseNoteParms) {
+
+return  axios.post(config.apiUrl + '/api/ReleaseNote/SearchReleaseNotes', releaseNoteParms)
+  .then(function (response) {
       return response.data;
     })
     .catch(function (error) {

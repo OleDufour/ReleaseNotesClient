@@ -82,7 +82,6 @@ export class AddComponent extends Component {
                 <div class="form-group">
                     <label for="exampleInputEmail1">Select a comment (if you wish)</label>
                     {CommentStore.comments && CommentStore.comments.length > 0 &&
-
                         <div className="dropdown show">
                             <select className="form-control js-DisplayOn valid" onChange={this.handleCommentChange} >
                                 {CommentStore.comments.map(com =>
@@ -91,7 +90,7 @@ export class AddComponent extends Component {
                               </select>
                         </div>
                     }
-                    <small id="emailHelp" class="form-text text-muted">A comment regroups as set of release notes and is preceded by a # sign in the output file.</small>
+                    <small id="emailHelp" class="form-text text-muted">A comment is a header for a set of release notes and is preceded by a # sign in the output file.</small>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Key</label>

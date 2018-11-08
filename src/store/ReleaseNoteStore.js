@@ -1,7 +1,7 @@
 import { observable, computed, action } from "mobx";
 import { relnotService } from '../service/relnotService';
 
-class ReleaseNote   {
+class ReleaseNoteStore   {
     @observable releaseNotes=[];
     @computed get allReleaseNotes() { return this.releaseNotes  }
 
@@ -17,8 +17,16 @@ class ReleaseNote   {
             // alert(ReferenceStore.referenceData .length)
         })
     }
+    searchReleaseNotes(releaseNoteParms) {        
+        relnotService.searchReleaseNotes(releaseNoteParms).then(response => {
+        
+            this.releaseNotes = response;
+            alert(response);
+            // alert(ReferenceStore.referenceData .length)
+        })
+    }
 }
 
 
-const releaseNotes = new ReleaseNote();
-export default releaseNotes;
+const releaseNoteStore = new ReleaseNoteStore();
+export default releaseNoteStore;
