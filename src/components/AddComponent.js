@@ -11,7 +11,7 @@ export class AddComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            commentID: 0,
+            commentID: null,
             releaseNoteKey: '',
             releaseNoteValue: ''
         };
@@ -54,16 +54,18 @@ export class AddComponent extends Component {
         //var releaseSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
         var countryCodesSelected = ReferenceStore.countryCodesDefault.filter(x => x.selected === true).map(a => a.id);
         var environmentsSelected = ReferenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
+        let releaseID = parseInt(ReferenceStore.selectedReleaseIDGet);
+ 
 
         environmentsSelected.forEach(idEnv => {
             countryCodesSelected.forEach(idCountry => {
                 console.log(idEnv, idCountry);
-                releaseNote["ReleaseId"] = parseInt(ReferenceStore.selectedReleaseID);
+                releaseNote["ReleaseId"] = releaseID;
                 releaseNote["CleTypeId"] = parseInt(ReferenceStore.selectedCleTypeID);
                 releaseNote["CountryCodeId"] = idCountry;
                 releaseNote["EnvironmentId"] = idEnv;
-                releaseNote["CommentId"] = parseInt(this.state.commentID);
-                releaseNote["Key"] = this.state.releaseNoteKey;
+                releaseNote["CommentId"] = this.state.commentID ;
+                releaseNote["KeyName"] = this.state.releaseNoteKey;
                 releaseNote["Value"] = this.state.releaseNoteValue;
                 releaseNoteArray.push(releaseNote);
                 releaseNote = {}; // reinitialize the object
@@ -90,7 +92,7 @@ export class AddComponent extends Component {
                               </select>
                         </div>
                     }
-                    <small id="emailHelp" class="form-text text-muted">A comment is a header for a set of release notes and is preceded by a # sign in the output file.</small>
+                    <small id="emailHelp" class="form-text text-muted">A comment groups a set of release notes and is preceded by a # sign in the output file.</small>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Key</label>

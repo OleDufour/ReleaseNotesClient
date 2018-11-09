@@ -14,8 +14,8 @@ export default class SideMenuComponent extends Component {
     super(props);
 
     this.selectUnselectReferenceData = this.selectUnselectReferenceData.bind(this);
-    this.handleInputChangeSingleSelect = this.handleInputChangeSingleSelect.bind(this);
-    this.handleInputChangeMultiSelect = this.handleInputChangeMultiSelect.bind(this);
+    //  this.handleInputChangeSingleSelect = this.handleInputChangeSingleSelect.bind(this);
+  //  this.handleInputChangeMultiSelect = this.handleInputChangeMultiSelect.bind(this);
   }
 
   componentDidMount() {
@@ -27,7 +27,7 @@ export default class SideMenuComponent extends Component {
 
   }
 
-  handleInputChangeSingleSelect(event) {
+  handleInputChangeSingleSelect=(event)=> {
 
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
     // alert(propertyName);
@@ -42,7 +42,7 @@ export default class SideMenuComponent extends Component {
   }
 
 
-  handleInputChangeMultiSelect(event) {
+  handleInputChangeMultiSelect=(event)=> {
 
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
     var refID = event.target.attributes.getNamedItem('data-refid').value;
@@ -64,7 +64,6 @@ export default class SideMenuComponent extends Component {
   }
 
   selectUnselectReferenceDataSingleSelect(propertyName, refID) {
-
     referenceStore.referenceData.map(ref => {
       if (ref.propertyName == propertyName) {
         ref.selected = ref.id == refID ? true : false;
@@ -82,7 +81,7 @@ export default class SideMenuComponent extends Component {
           <label for="selRelease">Release</label>
           <select id="selRelease" onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
             {referenceStore.releases.map(ref =>
-              <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
+              <option key={ref.id} defaultValue={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
             )};
          </select>
         </div>

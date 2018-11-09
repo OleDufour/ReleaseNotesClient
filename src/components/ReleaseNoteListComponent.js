@@ -19,7 +19,7 @@ export class ListComponent extends Component {
 
     componentDidMount() {
         // alert('list did mount')
-        rn.getReleaseNotes();
+        releaseNoteStore.getReleaseNotes();
 
 
         let rc = iMap(referenceStore)
@@ -30,56 +30,33 @@ export class ListComponent extends Component {
     }
 
     searchReleaseNoteKey = (event) => {
-        var releaseNoteArray = [];
-        var releaseNote = {};
 
         console.log('commentid: ' + this.state.commentID);
 
-        //var releaseSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
-        let countryCodesSelected = ReferenceStore.countryCodesDefault.filter(x => x.selected === true).map(a => a.id);
-        let environmentsSelected = ReferenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
-        let releaseID = parseInt(ReferenceStore.selectedReleaseID);
-        let cleTypeID = parseInt(ReferenceStore.selectedCleTypeID);
+        let releaseID = parseInt(ReferenceStore.selectedReleaseIDGet);
         let key = event.target.value;
-
-
-        environmentsSelected.forEach(idEnv => {
-            countryCodesSelected.forEach(idCountry => {
-                console.log(idEnv, idCountry);
-                releaseNote["ReleaseId"] = parseInt(ReferenceStore.selectedReleaseID);
-                releaseNote["CleTypeId"] = parseInt(ReferenceStore.selectedCleTypeID);
-                releaseNote["CountryCodeId"] = idCountry;
-                releaseNote["EnvironmentId"] = idEnv;
-                //  releaseNote["CommentId"] = parseInt(this.state.commentID);
-                releaseNote["Key"] = this.state.releaseNoteKey;
-                releaseNote["Value"] = this.state.releaseNoteValue;
-                releaseNoteArray.push(releaseNote);
-                releaseNote = {}; // reinitialize the object
-            });
-        });
 
         let releaseNoteParms = {};
         releaseNoteParms["ReleaseId"] = releaseID;
-        releaseNoteParms["CleTypeId"] = cleTypeID;
-        releaseNoteParms["CountryCodeId"] = countryCodesSelected;
-        releaseNoteParms["EnvironmentId"] = environmentsSelected;
-        releaseNoteParms["Key"] = key;
-        releaseNoteParms["Value"] = ""; // just for compliance
+        releaseNoteParms["KeyName"] = key;
 
         console.log('$$$$$ releaseNoteSearchParms: ', releaseNoteParms);
-
-        rn.searchReleaseNotes(releaseNoteParms);
+        releaseNoteStore.searchReleaseNotes(releaseNoteParms);
         event.preventDefault();
     }
+
+    deleteReleaseNoteKey = (event) => {
+        let keyName = event.target.attributes.getNamedItem('data-keyname').value;
+        releaseNoteStore.deleteReleaseNoteKey(keyName);
+    }
+
 
     render() {
         return (<div  >
             <div class="form-group">
-            <label for="selRelease">Key</label>
+                <label for="selRelease">Key</label>
                 <input type="text" class="form-control" placeholder="search" onChange={this.searchReleaseNoteKey} ></input>
             </div>
-            Telkens 1 file tonen. Met back en forward buttons elke file browsen.<br />
-            Je bent telkens maar geinteresseerd in 1 key!!
             {releaseNoteStore.allReleaseNotes && releaseNoteStore.allReleaseNotes.length > 0 &&
                 <table class="table" class="table table-striped table-bordered">
                     <tbody>
@@ -87,7 +64,7 @@ export class ListComponent extends Component {
                             <tr>
                                 {/* <div selected="selected" key={r.id}> */}
                                 <td>
-                                    {r.value}
+                                    {r.keyName}
                                 </td>
                                 <td>
                                     {r.value}
@@ -98,8 +75,8 @@ export class ListComponent extends Component {
                                     </button>
                                 </td>
                                 <td>
-                                    <button title="Supprimer" className="btnGrid btn-primary btn-warning content-remove-link"  >
-                                        <span class="fa fa-trash">Delete</span>
+                                    <button data-keyname={r.keyName} onClick={this.deleteReleaseNoteKey} title="Supprimer" className="btnGrid btn-primary btn-warning content-remove-link"  >
+                                        <span data-keyname={r.keyName} class="fa fa-trash">Delete  {r.keyName}</span>
                                     </button>
                                 </td>
 

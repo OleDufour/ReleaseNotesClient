@@ -25,6 +25,17 @@ class ReleaseNoteStore   {
             // alert(ReferenceStore.referenceData .length)
         })
     }
+
+    deleteReleaseNoteKey(keyName){
+        
+        relnotService.deleteReleaseNoteKey(keyName).then(response => {
+        
+           
+            alert(response);
+            // alert(ReferenceStore.referenceData .length)
+        })
+    }
+
 }
 
 

@@ -7,9 +7,9 @@ export const relnotService = {
   AddComment,
   getComments,
   postReleaseNotes,
-  postReleaseNotes2,
   getReleaseNotes,
-  searchReleaseNotes
+  searchReleaseNotes,
+  deleteReleaseNoteKey
 }
 
 
@@ -84,17 +84,6 @@ function postReleaseNotes(releaseNoteArray) {
     });
 }
 
-function postReleaseNotes2(releaseNoteArray) {
-  axios.post(config.apiUrl + '/api/ReleaseNote', { releaseNoteArray: releaseNoteArray })
-    .then(function (response) {
-      alert(response);
-    })
-    .catch(function (error) {
-      alert(error);
-    });
-}
-
-
 function getReleaseNotes() {
   return axios.get(config.apiUrl + '/api/ReleaseNote')
     .then(response => {
@@ -106,7 +95,6 @@ function getReleaseNotes() {
 }
 
 function searchReleaseNotes(releaseNoteParms) {
-
 return  axios.post(config.apiUrl + '/api/ReleaseNote/SearchReleaseNotes', releaseNoteParms)
   .then(function (response) {
       return response.data;
@@ -115,3 +103,16 @@ return  axios.post(config.apiUrl + '/api/ReleaseNote/SearchReleaseNotes', releas
       alert(error);
     });
 }
+
+function deleteReleaseNoteKey(releaseNoteKey) {
+  alert ('relnots')
+  return  axios.delete(config.apiUrl + '/api/ReleaseNote/'+releaseNoteKey )
+    .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+  }
+
+ 
