@@ -31,7 +31,11 @@ class ReferenceStore {
   };
 
   // updated when we select a CleType :
-  selectedCleTypeID = 0;
+  @observable selectedCleTypeID = 0;
+  @computed get selectedCleTypeIDGet() {
+    return this.selectedCleTypeID == 0 ? this.cleTypes[0].id : this.selectedCleTypeID;
+  }
+  //selectedCleTypeID = 0;
 
 
   constructor(refData = []) {

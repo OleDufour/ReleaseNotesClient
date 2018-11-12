@@ -70,13 +70,13 @@ export class ListComponent extends Component {
                                     {r.value}
                                 </td>
                                 <td>
-                                    <button title="Modifier" className="btnGrid btn-primary content-modify-link" >
+                                    <button data-countryCodeId={r.countryCodeId} title="Modifier" className="btnGrid btn-primary content-modify-link" >
                                         <span class="fa fa-pencil">Modify</span>
                                     </button>
                                 </td>
                                 <td>
                                     <button data-keyname={r.keyName} onClick={this.deleteReleaseNoteKey} title="Supprimer" className="btnGrid btn-primary btn-warning content-remove-link"  >
-                                        <span data-keyname={r.keyName} class="fa fa-trash">Delete  {r.keyName}</span>
+                                        <span data-keyname={r.keyName} class="fa fa-trash">Delete  {r.keyName}  {r.countryCodeId} </span>
                                     </button>
                                 </td>
 

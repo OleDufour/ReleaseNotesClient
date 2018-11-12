@@ -74,8 +74,8 @@ function getComments() {
 
 //werkt : "countryCodeId":11111,"environmentId":22,"cleTypeId":0,"releaseId":1110,"commentId":0,"value":null 
 
-function postReleaseNotes(releaseNoteArray) {
-  axios.post(config.apiUrl + '/api/ReleaseNote', { releaseNoteArray: releaseNoteArray })
+function postReleaseNotes(releaseNote) {
+  axios.post(config.apiUrl + '/api/ReleaseNote',releaseNote)
     .then(function (response) {
       alert(response);
     })

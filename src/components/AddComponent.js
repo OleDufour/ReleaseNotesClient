@@ -40,41 +40,25 @@ export class AddComponent extends Component {
 
     // Clicking on the submit button. Creates a new release note.
     // We are updating 
-    handleReleaseNoteSave = (event) => {
-        alert(ReferenceStore.selectedReleaseID);
-
-        var releaseNoteArray = [];
-        var releaseNote = {};
-
+    handleReleaseNoteSave = (event) => {       
+        
+        var releaseNoteLight = {};
         console.log('commentid: ' + this.state.commentID);
 
-        // var test = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
-
-
-        //var releaseSelected = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release").filter(x => x.selected === true).map(a => a.id);
         var countryCodesSelected = ReferenceStore.countryCodesDefault.filter(x => x.selected === true).map(a => a.id);
         var environmentsSelected = ReferenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
         let releaseID = parseInt(ReferenceStore.selectedReleaseIDGet);
- 
+        let cleTypeID = parseInt(ReferenceStore.selectedCleTypeID);
 
-        environmentsSelected.forEach(idEnv => {
-            countryCodesSelected.forEach(idCountry => {
-                console.log(idEnv, idCountry);
-                releaseNote["ReleaseId"] = releaseID;
-                releaseNote["CleTypeId"] = parseInt(ReferenceStore.selectedCleTypeID);
-                releaseNote["CountryCodeId"] = idCountry;
-                releaseNote["EnvironmentId"] = idEnv;
-                releaseNote["CommentId"] = this.state.commentID ;
-                releaseNote["KeyName"] = this.state.releaseNoteKey;
-                releaseNote["Value"] = this.state.releaseNoteValue;
-                releaseNoteArray.push(releaseNote);
-                releaseNote = {}; // reinitialize the object
-            });
-        });
+        releaseNoteLight["ReleaseId"] = releaseID;
+        releaseNoteLight.CleTypeId = cleTypeID;
+        releaseNoteLight["CountryCodeId"] = countryCodesSelected;
+        releaseNoteLight["EnvironmentId"] = environmentsSelected;
+        releaseNoteLight["KeyName"] = this.state.releaseNoteKey;
+        releaseNoteLight["Value"] = this.state.releaseNoteValue;
+        releaseNoteLight. CommentId =  this.state.commentID;
 
-        console.log('releaseNoteArray: ', releaseNoteArray);
-
-        relnotService.postReleaseNotes(releaseNoteArray);
+        relnotService.postReleaseNotes(releaseNoteLight);
         event.preventDefault();
     }
 
