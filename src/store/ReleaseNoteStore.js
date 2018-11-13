@@ -21,7 +21,7 @@ class ReleaseNoteStore   {
         relnotService.searchReleaseNotes(releaseNoteParms).then(response => {
         
             this.releaseNotes = response;
-            alert(response);
+        //    alert(response);
             // alert(ReferenceStore.referenceData .length)
         })
     }

@@ -35,7 +35,11 @@ class ReferenceStore {
   @computed get selectedCleTypeIDGet() {
     return this.selectedCleTypeID == 0 ? this.cleTypes[0].id : this.selectedCleTypeID;
   }
-  //selectedCleTypeID = 0;
+
+
+  // Type, Countries and Environments elements should sometimes be hidden:
+  @observable showNonReleaseInfo = true;
+
 
 
   constructor(refData = []) {

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { BrowserRouter } from 'react-router-dom';
 
+
 import logo from './../logo.svg';
 import { actions } from './../actions/referenceData';
 
@@ -48,11 +49,11 @@ class App extends Component {
             <NavBarComponent />
             <br />
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-md-1">
                 <SideMenuComponent />
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-11">
                 <Route path="/" exact component={AddComponent} />
                 <Route path="/delete" component={DeleteComponent} />
                 <Route path="/comment" component={CommentComponent} />

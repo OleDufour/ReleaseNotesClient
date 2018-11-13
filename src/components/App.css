@@ -32,7 +32,15 @@ span{
   font : sans-serif;
 }
 
-.fa{
+.test{
 
-  font : sans-serif;
+  font-family : sans-serif
+}
+
+
+.visible{ display: visible;}
+.invisible{ display: none   }
+
+.table td{height: 10px;
+     padding: .5rem;
 }

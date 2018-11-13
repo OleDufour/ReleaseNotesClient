@@ -5,6 +5,7 @@ import { actions } from '../actions/referenceData';
 import CommentStore from '../store/CommentStore';
 import ReferenceStore from '../store/ReferenceStore';
 import { relnotService } from '../service/relnotService';
+import referenceStore from '../store/ReferenceStore';
 
 @observer
 export class AddComponent extends Component {
@@ -13,13 +14,17 @@ export class AddComponent extends Component {
         this.state = {
             commentID: null,
             releaseNoteKey: '',
-            releaseNoteValue: ''
+            releaseNoteValue: '',
+            errorMessageVisible: false,
+            errorMessageText: ''
+
         };
     }
 
     componentDidMount() {
         //  alert('add did mount')
         actions.getComments();
+referenceStore.        showNonReleaseInfo=true;
     }
 
     // we are selecting a comment.
@@ -40,15 +45,15 @@ export class AddComponent extends Component {
 
     // Clicking on the submit button. Creates a new release note.
     // We are updating 
-    handleReleaseNoteSave = (event) => {       
-        
-        var releaseNoteLight = {};
-        console.log('commentid: ' + this.state.commentID);
+    handleReleaseNoteSave = (event) => {
 
         var countryCodesSelected = ReferenceStore.countryCodesDefault.filter(x => x.selected === true).map(a => a.id);
         var environmentsSelected = ReferenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
         let releaseID = parseInt(ReferenceStore.selectedReleaseIDGet);
-        let cleTypeID = parseInt(ReferenceStore.selectedCleTypeID);
+        let cleTypeID = parseInt(ReferenceStore.selectedCleTypeIDGet);
+
+        var releaseNoteLight = {};
+        console.log('commentid: ' + this.state.commentID);
 
         releaseNoteLight["ReleaseId"] = releaseID;
         releaseNoteLight.CleTypeId = cleTypeID;
@@ -56,7 +61,7 @@ export class AddComponent extends Component {
         releaseNoteLight["EnvironmentId"] = environmentsSelected;
         releaseNoteLight["KeyName"] = this.state.releaseNoteKey;
         releaseNoteLight["Value"] = this.state.releaseNoteValue;
-        releaseNoteLight. CommentId =  this.state.commentID;
+        releaseNoteLight.CommentId = this.state.commentID;
 
         relnotService.postReleaseNotes(releaseNoteLight);
         event.preventDefault();
@@ -87,7 +92,23 @@ export class AddComponent extends Component {
                     <input type="text" class="form-control" value={this.state.releaseNoteValue} onChange={this.handleReleaseNoteValueChange} class="form-control" />
                     <small id="emailHelp" class="form-text text-muted">The value will be updated for keys that already exist.</small>
                 </div>
-                <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">Save</button>
+
+
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">Save</button>
+                        </div>
+                        <div class="col-md-6" >
+                            <div class="alert alert-danger" role="alert" className="invisible" >
+                                This is a danger alert—check it out!
+                 </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </form>
         </div >);
     }

@@ -17,7 +17,7 @@ function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
 
-      return response.data.map((x) => { x.selected = false; return x; });
+      return response.data.map((x) => { x.selected = false;  return x; });
     })
     .catch(function (error) {
       alert(error);
@@ -97,7 +97,7 @@ function getReleaseNotes() {
 function searchReleaseNotes(releaseNoteParms) {
 return  axios.post(config.apiUrl + '/api/ReleaseNote/SearchReleaseNotes', releaseNoteParms)
   .then(function (response) {
-      return response.data;
+      return response.data.map((x) => { x.modification = false;  return x; });;
     })
     .catch(function (error) {
       alert(error);
