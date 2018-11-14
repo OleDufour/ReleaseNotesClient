@@ -7,7 +7,7 @@ import ReferenceStore from '../store/ReferenceStore';
 import { relnotService } from '../service/relnotService';
 
 @observer
-export class DeleteComponent extends Component {
+export class ErrorComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -84,4 +84,4 @@ export class DeleteComponent extends Component {
     </div>);
     }
 }
-export default DeleteComponent;
+export default ErrorComponent;

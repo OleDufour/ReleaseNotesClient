@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { actions } from '../actions/referenceData';
+
 import { relnotService } from '../service/relnotService';
+import referenceStore from '../store/ReferenceStore';
 
 class CommentComponent extends Component {
     constructor(props) {
@@ -10,17 +11,21 @@ class CommentComponent extends Component {
         };
     }
 
-  
+    componentDidMount() {
+
+        referenceStore.showNonReleaseInfo = false;
+
+    }
+
     // Voorbeeld: https://reactjs.org/docs/forms.html
 
     handleChange = (event) => {
-     //   alert(event.target.value);
         this.setState({ value: event.target.value });
     }
 
     handleClick = (event) => {
-        relnotService.AddComment( this.state.value);
-    //    alert('An essay was submitted: ' + this.state.value);
+        relnotService.AddComment(this.state.value);
+        //    alert('An essay was submitted: ' + this.state.value);
         event.preventDefault();
     };
 
@@ -29,8 +34,7 @@ class CommentComponent extends Component {
         return (
             <div class="input-group mb-3">
 
-                <select className="form-control js-DisplayOn valid">
-                </select>
+
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
                 </div>
@@ -38,6 +42,12 @@ class CommentComponent extends Component {
                 <div class="input-group-append">
                     <button type="button" onClick={this.handleClick} class="btn btn-primary" >Save comment</button>
                 </div>
+
+                <table class="table" class="table table-striped table-bordered">
+                    <tbody>
+                    </tbody>
+                </table>
+
             </div>
 
 

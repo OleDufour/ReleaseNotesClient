@@ -17,8 +17,8 @@ export default class SideMenuComponent extends Component {
   componentDidMount() {
 
     referenceStore.getAllReferenceData();
- 
-   // alert(referenceStore.showNonReleaseInfo);
+
+    // alert(referenceStore.showNonReleaseInfo);
   }
 
   componentDidUpdate() {
@@ -26,9 +26,12 @@ export default class SideMenuComponent extends Component {
 
   handleInputChangeSingleSelect = (event) => {
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
-    // alert(propertyName);
+    alert(propertyName);
     var refID = event.target.value;
 
+
+
+    alert(refID)
     switch (propertyName) {
       case "Release":
         referenceStore.selectedReleaseID = refID; break;
@@ -64,7 +67,7 @@ export default class SideMenuComponent extends Component {
     })
   }
 
- 
+
   render() {
     //  alert ('sidemenu component render')
     return (
@@ -73,7 +76,7 @@ export default class SideMenuComponent extends Component {
           <label for="selRelease">Release</label>
           <select id="selRelease" onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
             {referenceStore.releases.map(ref =>
-              <option key={ref.id} defaultValue={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id} >{ref.name} {ref.selected} </option>
+              <option key={ref.id} defaultValue={ref.id} value={ref.id}  data-refid={ref.id} >{ref.name} {ref.selected} </option>
             )};
          </select>
         </div>
@@ -84,7 +87,7 @@ export default class SideMenuComponent extends Component {
               <label for="selCleType">Type</label>
               <select id="selCleType" onChange={this.handleInputChangeSingleSelect} data-propertyname="CleType" className="form-control js-DisplayOn valid" >
                 {referenceStore.cleTypes.map(ref =>
-                  <option key={ref.id} value={ref.id} data-propertyname={ref.propertyName} data-refid={ref.id}  >{ref.name}  {ref.selected}</option>
+                  <option key={ref.id} selected={ref.selected} data-selected={ref.selected} defaultValue={ref.id}  value={ref.id} data-refid={ref.id}  >{ref.name}  {ref.selected}</option>
                 )};
          </select>
             </div>

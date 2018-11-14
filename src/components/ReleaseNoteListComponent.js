@@ -10,6 +10,7 @@ import { relnotService } from '../service/relnotService';
 
 
 
+
 @observer
 export class ListComponent extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ export class ListComponent extends Component {
             commentID: '',
             releaseNoteText: '',
             currentReleasenoteId: 0,
+            currentReleasenoteKey: '',
             currentReleasenoteValue: ''
         };
 
@@ -59,19 +61,14 @@ export class ListComponent extends Component {
 
     // click on Modify button
     startModifyingReleaseNoteKey = (event) => {
-        let keyName = event.target.attributes.getNamedItem('data-keyname').value;
+        referenceStore.showNonReleaseInfo = true;
+
         let releasenoteId = event.target.attributes.getNamedItem('data-releasenoteid').value;
+        let cletypeid = event.target.attributes.getNamedItem('data-cletypeid').value;
         let countrycodeid = event.target.attributes.getNamedItem('data-countrycodeid').value;
         let environmentid = event.target.attributes.getNamedItem('data-environmentid').value;
 
-
-
-
-        this.setState({ currentReleasenoteid: event.target.attributes.getNamedItem('data-releasenoteid').value });
-        alert(releasenoteId)
-        referenceStore.showNonReleaseInfo = true;
-        // alert(releaseNoteStore.allReleaseNotes[1].test);
-        //releaseNoteStore.allReleaseNotes[1].test = 'def'; 
+        this.setState({ currentReleasenoteId: event.target.attributes.getNamedItem('data-releasenoteid').value });
 
         var countrycodeidArray = countrycodeid.split(',');
         var environmentidArray = environmentid.split(',');
@@ -83,22 +80,19 @@ export class ListComponent extends Component {
                 r.modification = false;
         });
 
-
         referenceStore.referenceData.map(r => {
             if (r.propertyName != "Release") {
                 r.selected = false;
             }
         });
 
-
-        // set countrycodes to selected
+        // set sidemenu to selected
         referenceStore.referenceData.map(r => {
             if (r.propertyName === "CleType") {
-                environmentidArray.map(c => {
-                    if (c == r.id) {
-                        r.selected = true;
-                    }
-                })
+                if (r.id == cletypeid)
+                    r.selected = true;
+                else
+                    r.selected = false;
             }
             else if (r.propertyName === "CountryCode") {
                 countrycodeidArray.map(c => {
@@ -115,17 +109,48 @@ export class ListComponent extends Component {
                 })
             }
         });
+    }
+
+    saveReleaseNote = (event) => {
 
 
+        let releaseNoteId = this.state.currentReleasenoteId;
+        // alert('releaseNoteId ' + releaseNoteId);
+        // alert(referenceStore.cleTypes.filter(x => x.selected === true));
+        // alert(referenceStore.countryCodesDefault.filter(x => x.selected === true));
+        // alert(referenceStore.environmentsDefault.filter(x => x.selected === true));
+        // alert(this.state.currentReleasenoteValue);
+
+        var countryCodesSelected = referenceStore.countryCodesDefault.filter(x => x.selected === true).map(a => a.id);
+        var environmentsSelected = referenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
+        let releaseID = parseInt(referenceStore.selectedReleaseIDGet);
+        let cleTypeID = parseInt(referenceStore.selectedCleTypeIDGet);
+        alert('cleTypeID ' + cleTypeID)
+        var releaseNoteLight = {};
+        console.log('commentid: ' + this.state.commentID);
+
+        releaseNoteLight.ReleaseNoteId = releaseNoteId;
+        releaseNoteLight["ReleaseId"] = releaseID;
+        releaseNoteLight.CleTypeId = cleTypeID;
+        releaseNoteLight["CountryCodeId"] = countryCodesSelected;
+        releaseNoteLight["EnvironmentId"] = environmentsSelected;
+        releaseNoteLight["KeyName"] = this.state.currentReleasenoteKey;
+        releaseNoteLight["Value"] = this.state.currentReleasenoteValue;
+        //   releaseNoteLight.CommentId = this.state.commentID;
+
+        relnotService.postReleaseNotes(releaseNoteLight);
+        event.preventDefault();
 
     }
 
+    modifyReleaseNoteKey = (event) => {
+        this.setState({ currentReleasenoteKey: event.target.value });
+
+
+    }
     modifyReleaseNoteValue = (event) => {
-
+        this.setState({ currentReleasenoteValue: event.target.value });
     }
-
-
-
 
     deleteReleaseNoteKey = (event) => {
         let keyName = event.target.attributes.getNamedItem('data-keyname').value;
@@ -134,6 +159,33 @@ export class ListComponent extends Component {
     }
 
 
+
+    typeName = (cleTypeId) => {
+        var cleType = '';
+        referenceStore.cleTypes.map(x => {
+            if (cleTypeId == x.id)
+                cleType = x.name;
+        });
+        return cleType;
+    }
+    countryNames = (countryCodeId) => {
+        if (referenceStore.countryCodesDefault.length == countryCodeId.length) return '(All)';
+        var countries = '';
+        referenceStore.countryCodesDefault.map(x => {
+            if (countryCodeId.includes(x.id))
+                countries += x.name + ', ';
+        });
+        return countries.trim().slice(0, -1);
+    }
+    environmentNames = (environmentId) => {
+        if (referenceStore.environmentsDefault.length == environmentId.length) return '(All)';
+        var environments = '';
+        referenceStore.environmentsDefault.map(x => {
+            if (environmentId.includes(x.id))
+                environments += x.name + ', ';
+        });
+        return environments.trim().slice(0, -1);
+    }
 
 
     render() {
@@ -144,20 +196,27 @@ export class ListComponent extends Component {
             </div>
             {
                 releaseNoteStore.allReleaseNotes && releaseNoteStore.allReleaseNotes.length > 0 &&
-                <table class="table" class="table table-striped table-bordered">
+                <table class="table" class="table table-striped table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Type</th>
+                            <th>Countries</th>
+                            <th>Environments</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {releaseNoteStore.allReleaseNotes.map(r =>
                             <tr>
                                 {/* <div selected="selected" key={r.id}> */}
                                 <td>
-                                    {r.releaseNoteId}--
-                                    {r.modification.toString()}
-                                    {r.keyName}
-                                    {r.releaseNoteId}
-                                    environment: {r.environmentId}-
-                                    country: {r.countryCodeId} -
-                                    cletypeid : {r.cleTypeId} -
-                                 </td>
+                                    {r.modification && <input onChange={this.modifyReleaseNoteKey} defaultValue={r.keyName} class="form-control" />}
+                                    {!r.modification && r.keyName}
+                                </td>
+                                <td>{this.typeName(r.cleT_ypeId)}</td>
+                                <td>{this.countryNames(r.countryCodeId)}</td>
+                                <td>{this.environmentNames(r.environmentId)}</td>
                                 <td>
                                     {r.modification && <input onChange={this.modifyReleaseNoteValue} defaultValue={r.value} class="form-control" />}
                                     {!r.modification && r.value}
@@ -165,19 +224,42 @@ export class ListComponent extends Component {
                                 <td>
                                     {!r.modification &&
                                         <React.Fragment>
-                                            <button onClick={this.startModifyingReleaseNoteKey} data-releasenoteid={r.releaseNoteId} data-countrycodeid={r.countryCodeId}
+                                            <button onClick={this.startModifyingReleaseNoteKey}
+                                                data-releasenoteid={r.releaseNoteId}
+                                                data-cletypeid={r.cleTypeId}
+                                                data-countrycodeid={r.countryCodeId}
                                                 data-environmentid={r.environmentId}
                                                 data-keyname={r.keyName} title="Modifier" className="btnGrid btn-primary content-modify-link" >
-                                                <span data-keyname={r.keyName} data-countrycodeid={r.countryCodeId}
+                                                <span
+                                                    data-keyname={r.keyName}
+                                                    data-cletypeid={r.cleTypeId}
+                                                    data-countrycodeid={r.countryCodeId}
                                                     data-environmentid={r.environmentId}
-                                                    data-releasenoteid={r.releaseNoteId} class="fa fa-pencil"><span data-countrycodeid={r.countryCodeId} data-environmentid={r.environmentId} data-releasenoteid={r.releaseNoteId} data-keyname={r.keyName} class='test'>&nbsp;&nbsp;Modify  </span></span>
+                                                    data-releasenoteid={r.releaseNoteId}
+                                                    class="fa fa-pencil">
+                                                    <span
+                                                        data-cletypeid={r.cleTypeId}
+                                                        data-countrycodeid={r.countryCodeId}
+                                                        data-environmentid={r.environmentId}
+                                                        data-releasenoteid={r.releaseNoteId}
+                                                        data-keyname={r.keyName} class='test'>&nbsp;&nbsp;Modify  </span></span>
                                             </button>  &nbsp;&nbsp;
                                         </React.Fragment>
                                     }
                                     {r.modification &&
                                         <React.Fragment>
-                                            <button onClick={this.startModifyingReleaseNoteKey} data-countrycodeid={r.countryCodeId} data-keyname={r.keyName} title="Modifier" className="btnGrid btn-primary content-modify-link" >
-                                                <span data-keyname={r.keyName} class="fa fa-save"><span data-keyname={r.keyName} class='test'>&nbsp;&nbsp;Save  </span></span>
+                                            <button onClick={this.saveReleaseNote}
+                                                data-cletypeid={r.cleTypeId}
+                                                data-countrycodeid={r.countryCodeId}
+                                                data-releasenoteid={r.releaseNoteId}
+                                                data-keyname={r.keyName}
+                                                title="Modifier" className="btnGrid btn-primary content-modify-link" >
+                                                <span
+                                                    data-cletypeid={r.cleTypeId}
+                                                    data-countrycodeid={r.countryCodeId}
+                                                    data-environmentid={r.environmentId}
+                                                    data-releasenoteid={r.releaseNoteId}
+                                                    class="fa fa-save"><span data-releasenoteid={r.releaseNoteId} data-keyname={r.keyName} class='test'>&nbsp;&nbsp;Save  </span></span>
                                             </button> &nbsp;&nbsp;
                                         </React.Fragment>
                                     }

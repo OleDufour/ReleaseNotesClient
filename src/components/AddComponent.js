@@ -15,8 +15,8 @@ export class AddComponent extends Component {
             commentID: null,
             releaseNoteKey: '',
             releaseNoteValue: '',
-            errorMessageVisible: false,
-            errorMessageText: ''
+            validationError: false,
+            validationMessageText: null
 
         };
     }
@@ -24,7 +24,7 @@ export class AddComponent extends Component {
     componentDidMount() {
         //  alert('add did mount')
         actions.getComments();
-referenceStore.        showNonReleaseInfo=true;
+        referenceStore.showNonReleaseInfo = true;
     }
 
     // we are selecting a comment.
@@ -52,23 +52,36 @@ referenceStore.        showNonReleaseInfo=true;
         let releaseID = parseInt(ReferenceStore.selectedReleaseIDGet);
         let cleTypeID = parseInt(ReferenceStore.selectedCleTypeIDGet);
 
-        var releaseNoteLight = {};
+        if (cleTypeID == 0) { this.setState({ validationMessageText: 'Please select a release type' }); return; }
+        if (!countryCodesSelected || countryCodesSelected.length === 0) { this.setState({ validationMessageText: 'Please select one or more countries' }); return; }
+        if (!environmentsSelected || environmentsSelected.length === 0) { this.setState({ validationMessageText: 'Please select one or more environments' }); return; }
+        if (this.state.releaseNoteKey.trim() === '') { this.setState({ validationMessageText: 'Please specify a value for the key' }); return; }
+        if (this.state.releaseNoteValue.trim() === '') { this.setState({ validationMessageText: 'Please specify a value' }); return; }
+        this.setState({ validationMessageText: null });
+
+        var releaseNoteParms = {};
         console.log('commentid: ' + this.state.commentID);
 
-        releaseNoteLight["ReleaseId"] = releaseID;
-        releaseNoteLight.CleTypeId = cleTypeID;
-        releaseNoteLight["CountryCodeId"] = countryCodesSelected;
-        releaseNoteLight["EnvironmentId"] = environmentsSelected;
-        releaseNoteLight["KeyName"] = this.state.releaseNoteKey;
-        releaseNoteLight["Value"] = this.state.releaseNoteValue;
-        releaseNoteLight.CommentId = this.state.commentID;
+        releaseNoteParms.ReleaseNoteId = 0;
+        releaseNoteParms["ReleaseId"] = releaseID;
+        releaseNoteParms.CleTypeId = cleTypeID;
+        releaseNoteParms["CountryCodeId"] = countryCodesSelected;
+        releaseNoteParms["EnvironmentId"] = environmentsSelected;
+        releaseNoteParms["KeyName"] = this.state.releaseNoteKey;
+        releaseNoteParms["Value"] = this.state.releaseNoteValue;
+        releaseNoteParms.CommentId = this.state.commentID;
 
-        relnotService.postReleaseNotes(releaseNoteLight);
+        relnotService.postReleaseNotes(releaseNoteParms);
         event.preventDefault();
     }
 
     render() {
         return (<div className="container mt-3">
+            {this.state.validationMessageText &&
+                <div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    &nbsp;&nbsp;{this.state.validationMessageText}
+                </div>
+            }
             <form>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Select a comment (if you wish)</label>
@@ -97,18 +110,9 @@ referenceStore.        showNonReleaseInfo=true;
 
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-3">
-                            <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">Save</button>
-                        </div>
-                        <div class="col-md-6" >
-                            <div class="alert alert-danger" role="alert" className="invisible" >
-                                This is a danger alert—check it out!
-                 </div>
-                        </div>
+                        <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">&nbsp;&nbsp;Save &nbsp;&nbsp;</button>
                     </div>
                 </div>
-
-
             </form>
         </div >);
     }

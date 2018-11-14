@@ -14,8 +14,7 @@ import CommentComponent from './CommentsComponent';
 // components
 import NavBarComponent from './NavBarComponent';
 import SideMenuComponent from './SideMenuComponent';
-import ReleaseNoteListComponent from './ReleaseNoteListComponent';
-import DeleteComponent from './DeleteComponent';
+import ReleaseNoteListComponent from './ReleaseNoteListComponent'; 
 import DownloadComponent from './DownloadComponent';
 
 import './App.css';
@@ -54,8 +53,7 @@ class App extends Component {
               </div>
 
               <div class="col-md-11">
-                <Route path="/" exact component={AddComponent} />
-                <Route path="/delete" component={DeleteComponent} />
+                <Route path="/" exact component={AddComponent} />     
                 <Route path="/comment" component={CommentComponent} />
                 <Route path="/preview" component={ReleaseNoteListComponent} />
                 <Route path="/download" component={DownloadComponent} />

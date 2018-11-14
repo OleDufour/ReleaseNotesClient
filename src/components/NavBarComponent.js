@@ -23,7 +23,6 @@ referenceStore.    referenceData.map((x)=>{x.selected=true; return x;});
       <a className="navbar-brand" href="#">fger</a>
       <ul className="navbar-nav">
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active'  onClick={this.addClicked} to='/'>Add</NavLink>
-        <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/delete'>Delete</NavLink>
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/comment'>Comment</NavLink>
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/preview'>Preview</NavLink>
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/download'>Download</NavLink>

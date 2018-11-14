@@ -41,6 +41,6 @@ span{
 .visible{ display: visible;}
 .invisible{ display: none   }
 
-.table td{height: 10px;
+/* .table td{height: 10px;
      padding: .5rem;
-}
+} */
