@@ -18,19 +18,15 @@ class ReleaseNoteStore   {
         })
     }
     searchReleaseNotes(releaseNoteParms) {        
-        relnotService.searchReleaseNotes(releaseNoteParms).then(response => {
-        
+        relnotService.searchReleaseNotes(releaseNoteParms).then(response => {        
             this.releaseNotes = response;
         //    alert(response);
             // alert(ReferenceStore.referenceData .length)
         })
     }
 
-    deleteReleaseNoteKey(keyName){
-        
-        relnotService.deleteReleaseNoteKey(keyName).then(response => {
-        
-           
+    deleteReleaseNoteKey(keyName){        
+        relnotService.deleteReleaseNoteKey(keyName).then(response => {          
             alert(response);
             // alert(ReferenceStore.referenceData .length)
         })

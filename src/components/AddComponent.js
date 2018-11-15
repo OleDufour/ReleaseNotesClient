@@ -23,7 +23,7 @@ export class AddComponent extends Component {
 
     componentDidMount() {
         //  alert('add did mount')
-        actions.getComments();
+     actions.getComments();
         referenceStore.showNonReleaseInfo = true;
     }
 

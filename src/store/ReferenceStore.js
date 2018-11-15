@@ -49,8 +49,8 @@ class ReferenceStore {
 
   getAllReferenceData() {
     relnotService.getReferenceData().then(response => {
-      this.referenceData = response;
-      // alert(ReferenceStore.referenceData .length)
+  
+      this.referenceData = response;   
     })
   }
 

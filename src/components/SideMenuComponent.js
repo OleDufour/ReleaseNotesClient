@@ -26,12 +26,12 @@ export default class SideMenuComponent extends Component {
 
   handleInputChangeSingleSelect = (event) => {
     var propertyName = event.target.attributes.getNamedItem('data-propertyname').value;
-    alert(propertyName);
+   // alert(propertyName);
     var refID = event.target.value;
 
 
 
-    alert(refID)
+    //alert(refID)
     switch (propertyName) {
       case "Release":
         referenceStore.selectedReleaseID = refID; break;
