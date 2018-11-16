@@ -4,20 +4,25 @@ import { config } from '../config'
 // used in actions/referenceData
 export const relnotService = {
   getReferenceData,
-  AddComment,
+
+  addComment,
   getComments,
+  deleteComment,
+  updateComment,
+
   postReleaseNotes,
   updateReleaseNote,
   getReleaseNotes,
   searchReleaseNotes,
-  deleteReleaseNoteKey
+  deleteReleaseNoteKey,
+
 }
 
 
 function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
-//console.log(response);
+      //console.log(response);
       return response.data.map((x) => { x.selected = false; return x; });
     })
     .catch(function (error) {
@@ -27,28 +32,48 @@ function getReferenceData() {
 
 
 // Comments
-function AddComment(comment) {
-  axios.post(config.apiUrl + '/api/Comment', {
-    Name: comment
-  })
-    .then(function (response) {
-   
+async function addComment(comment) {
+  await axios.post(config.apiUrl + '/api/Comment', comment)
+    .then(response => {
+      comment.id = response.data.id;
+      return comment;
     })
     .catch(function (error) {
       alert(error);
     });
 }
-
 function getComments() {
   return axios.get(config.apiUrl + '/api/Comment')
     .then(response => {
-      return response.data.map((x) => { x.modification = false; return x; }); 
+      return response.data.map((x) => { x.modification = false; return x; });
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+}
+async function deleteComment(id) {
+  await axios.delete(config.apiUrl + '/api/Comment/' + id)
+    .then(function (response) {
+      // alert(id + ' deleted')
+      // return id;
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+}
+async function updateComment(comment) {
+  await axios.put(config.apiUrl + '/api/Comment/', comment)
+    .then(function (response) {
+
+      return comment.id;
     })
     .catch(function (error) {
       alert(error);
     });
 }
 
+
+//------------------------------------------------------------
 function postReleaseNotes(releaseNote) {
   axios.post(config.apiUrl + '/api/ReleaseNote', releaseNote)
     .then(function (response) {

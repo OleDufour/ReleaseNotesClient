@@ -1,13 +1,21 @@
-import { observable, computed } from "mobx";
+import { observable, computed, action } from "mobx";
 
 
 class CommentStore {
-    @observable commentData;
+    @observable commentData = [];
+
+    @action.bound
+    updateComment(id, name) {     
+        this.commentData.map(p => p.id === id ? p.name = name : p.name = p.name);      
+    }
+
+
+    @computed get allComments() { return this.commentData }
+
     @computed get comments() {
         var defaultValue = { id: 0, name: '' };
-        // a deep copy, else error : Computed values are not allowed to cause side effects by changing observables that are already being observed.
-        var commentsWithDefault = JSON.parse(JSON.stringify(this.commentData)); 
-        commentsWithDefault.unshift(defaultValue)
+        // = unshift, yet immutable: 
+        var commentsWithDefault = [defaultValue, ... this.commentData];
         return commentsWithDefault;
     }
 

@@ -5,64 +5,98 @@ import { actions } from '../actions/referenceData';
 import { relnotService } from '../service/relnotService';
 import referenceStore from '../store/ReferenceStore';
 import commentStore from '../store/CommentStore';
+import   commentActions  from '../actions/CommentActions';
 
 @observer
 class CommentComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
-            commentsCount: 0,
-            comments: []
+            value: '',        // for a new value
+            currentValue: '',  // update in grid
+            commentsCount: commentStore.allComments.length,
+            comments: [],
+            currentCommentId: 0,
+            currentCommentName: '',
+            fetchNew: false
         };
     }
-    fetchNew = false;
+    _fetchNew = false;
 
     componentDidMount() {
         console.log("$$$$$$$$$$", commentStore.commentsCount)
         referenceStore.showNonReleaseInfo = false;
-        alert('page refresh')
-         actions.getComments();
-        alert('componentDidMount')
-    }
-
- 
-
-    componentWillUpdate() {
-
-        //  console.log("********", commentStore.commentsCount)
-        //this.setState({ comments: commentStore.commentData.length })
-        //console.log("$$$$$$$$$$", this.state.commentsCount)
-        //  commentStore.commentData = [];
-        if (this.fetchNew);
         actions.getComments();
-       this. fetchNew = false;
     }
 
-    // Voorbeeld: https://reactjs.org/docs/forms.html
+    startModifying = (event) => {
+        this.setState({ currentCommentId: parseInt(event.target.attributes.getNamedItem('data-id').value) });
+        // this.setState({ currentCommentName: event.target.attributes.getNamedItem('data-name').value });
 
-    handleChange = (event) => {
+        let id = parseInt(event.target.attributes.getNamedItem('data-id').value);
+        commentStore.allComments.map(x => { x.modification = x.id == id ? true : false; });
+    }
+
+    delete = (event) => {
+        this.setState({ currentCommentId: parseInt(event.target.attributes.getNamedItem('data-id').value) });
+        this.setState({ currentCommentName: event.target.attributes.getNamedItem('data-name').value });
+        this.setState({ fetchNew: true });
+
+        let id = parseInt(event.target.attributes.getNamedItem('data-id').value);
+
+        relnotService.deleteComment(id).then(result => {
+          //  alert('return!')
+            commentStore.commentData = commentStore.commentData.filter(obj => obj.id !== id);
+        }).catch(err => {
+        });
+    }
+
+    setNewValue = (event) => {
         this.setState({ value: event.target.value });
     }
 
-    handleClick = (event) => {
-        relnotService.AddComment(this.state.value);
-        this.fetchNew = true;
+    add = (event) => {
+        var comment = { id: 0, name: this.state.value };
+        relnotService.addComment(comment).then(result => {
+
+            console.log("µµµµµµµµµµµµ", comment)
+            // var newComment = { id: result.data.id, name: result.data.name };
+            commentStore.commentData.unshift(comment)
+        });
+
+        // this.setState({ commentsCount: commentStore.allComments.length + 1 });
         event.preventDefault();
     };
+
+    setExistingValue = (event) => {
+        this.setState({ currentValue: event.target.value });
+    }
+
+    update = (event) => {
+        let id = parseInt(this.state.currentCommentId);
+        let name = this.state.currentValue;
+        alert(id + ' ' + name);
+        let comment = { id: id, name: name };
+        relnotService.updateComment(comment).then(result => {
+            
+            commentStore.updateComment(id, name)
+         
+            commentStore.allComments.map(x => { x.modification = false; });
+        });
+    }
 
 
     render() {
         return (
             <React.Fragment>
-                <div class="col-md-7">
+                <div class="col-md-8">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
                         </div>
-                        <input type="text" value={this.state.value} onChange={this.handleChange} class="form-control" />
+                        <input type="text" value={this.state.value} onChange={this.setNewValue} class="form-control" />
                         <div class="input-group-append">
-                            <button type="button" onClick={this.handleClick} class="btn btn-primary" >Save comment</button>
+                            <button type="button" onClick={this.add} class="btn btn-primary" >Save comment</button>
                         </div>
                     </div>
                 </div>
@@ -70,51 +104,52 @@ class CommentComponent extends Component {
                 <div class="col-md-8">
                     <table class="table" class="table table-striped table-bordered ">
                         <thead>
-                            <tr>
-                                <th>Comments</th>
-                            </tr>
+                            <tr><th>Comments</th><th></th></tr>
                         </thead>
                         <tbody>
-                            {commentStore.getCommentData.map(x =>
+                            {commentStore.getCommentData && commentStore.getCommentData.map(x =>
                                 <tr>
                                     <td>
-                                        {x.modification && <input onChange={this.modifyReleaseNoteValue} defaultValue={x.name} class="form-control" />}
+                                        {x.modification && <input onChange={this.setExistingValue} defaultValue={x.name} class="form-control" />}
                                         {!x.modification && x.name}
                                     </td>
                                     <td>
                                         {!x.modification &&
                                             <React.Fragment>
-                                                <button onClick={this.startModifyingReleaseNoteKey}
-                                                    data-releasenoteid={x.releaseNoteId}
+                                                <button onClick={this.startModifying}
+                                                    data-id={x.id}
+                                                    data-name={x.name}
                                                     title="Modifier" className="btnGrid btn-primary content-modify-link" >
                                                     <span
+                                                        data-id={x.id}
                                                         data-name={x.name}
                                                         class="fa fa-pencil">
                                                         <span
-                                                            data-name={x.name} class='test'>&nbsp;&nbsp;Modify  </span></span>
+                                                            data-id={x.id}
+                                                            data-name={x.name}
+                                                            class='test'>&nbsp;&nbsp;Modify  </span></span>
                                                 </button>  &nbsp;&nbsp;
                                              </React.Fragment>
                                         }
                                         {x.modification &&
                                             <React.Fragment>
-                                                <button onClick={this.saveReleaseNote}
-                                                    data-cletypeid={x.cleTypeId}
-                                                    data-countrycodeid={x.countryCodeId}
-                                                    data-releasenoteid={x.releaseNoteId}
-                                                    data-keyname={x.keyName}
+                                                <button onClick={this.update}
+                                                    data-id={x.id}
+                                                    data-name={x.name}
                                                     title="Modifier" className="btnGrid btn-primary content-modify-link" >
                                                     <span
-                                                        data-cletypeid={x.cleTypeId}
-                                                        data-countrycodeid={x.countryCodeId}
-                                                        data-environmentid={x.environmentId}
-                                                        data-releasenoteid={x.releaseNoteId}
-                                                        class="fa fa-save"><span data-releasenoteid={x.releaseNoteId} data-keyname={x.keyName} class='test'>&nbsp;&nbsp;Save  </span></span>
+                                                        data-id={x.id}
+                                                        data-name={x.name}
+                                                        class="fa fa-save">
+                                                        <span
+                                                            data-id={x.id}
+                                                            data-name={x.name} class='test'>&nbsp;&nbsp;Save  </span></span>
                                                 </button> &nbsp;&nbsp;
                                     </React.Fragment>
                                         }
 
-                                        <button data-keyname={x.keyName} onClick={this.deleteReleaseNoteKey} title="Supprimer" className="btnGrid btn-primary btn-warning  "  >
-                                            <span data-keyname={x.keyName} class="fa fa-trash"><span data-keyname={x.keyName} class='test'>&nbsp;&nbsp;Delete </span> </span>
+                                        <button data-id={x.id} data-name={x.name} onClick={this.delete} title="Supprimer" className="btnGrid btn-primary btn-warning  "  >
+                                            <span data-id={x.id} data-name={x.name} data-keyname={x.keyName} class="fa fa-trash"><span data-id={x.id} data-name={x.name} class='test'>&nbsp;&nbsp;Delete </span> </span>
                                         </button>
                                     </td>
                                 </tr>
@@ -123,8 +158,6 @@ class CommentComponent extends Component {
                         </tbody>
                     </table>
                 </div>
-
-
             </React.Fragment>
         );
     }
