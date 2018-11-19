@@ -37,10 +37,108 @@ span{
   font-family : sans-serif
 }
 
+body {
+  padding-top: 50px;
+}
 
-.visible{ display: visible;}
-.invisible{ display: none   }
+.navbar {
+  height: 50px;
+  padding: 0 15px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+.navbar a {
+  color: white;
+  line-height: 3em;
+}
 
-/* .table td{height: 10px;
-     padding: .5rem;
-} */
+
+#releaseNotesList   tbody{
+    height:600px;
+    overflow-y:auto;
+    width: 100%;
+    }
+
+    #releaseNotesList      tr:after {
+      content: ' ';
+      display: block;
+      visibility: hidden;
+      clear: both;
+  }
+ 
+  #releaseNotesList .table-fixed{
+  width: 100%;
+  background-color: #f3f3f3;
+  table-layout: fixed;
+}
+ 
+  #releaseNotesList thead {
+    display:block; border: 0px;
+    box-shadow:  0 8px 2px -2px #aaa; 
+ 
+  }
+
+  #releaseNotesList tbody {
+    display:block; border: 0px;
+  }
+
+  #releaseNotesList tr {
+    display:block; border: 0px;
+  }
+
+
+ 
+  #releaseNotesList  td    {
+      float:left;
+     
+      border: 0px;
+      display:block; border: 0px;
+      padding:    .5rem;
+      font-size: 12px;
+      word-wrap:break-word;
+      font-family: monospace,Courier;
+    } 
+ 
+    #releaseNotesList      th{
+        float:left;
+        width:16.4%;
+        display:block; border: 0px; 
+        padding:    .3rem;
+    font-size:12px;
+      }
+
+
+      #releaseNotesList td:nth-child(1){width:30%;}
+      #releaseNotesList td:nth-child(2){width:8%;}     
+     #releaseNotesList td:nth-child(3){width:8%;}
+     #releaseNotesList td:nth-child(4){width:10%;}
+      #releaseNotesList td:nth-child(5){width:30%;}
+      #releaseNotesList td:nth-child(6){width:11%;}
+
+      #releaseNotesList  th:last-child,
+      #releaseNotesList  td:last-child,
+      #releaseNotesList  th:nth-last-child(1),
+      #releaseNotesList  td:nth-last-child(1) {
+          text-align: right;
+      }
+
+
+      .table-bordered td, .table-bordered th{ border:0px;}
+
+      .appTitle{
+        color:red;
+          margin-top: -4px;
+          font-size: 30px; 
+          font-family: 'Pacifico', cursive
+         };
+          .navbar-light .navbar-brand{
+    
+           color:red;
+         }
+    
+         .navbar a{
+    
+            color:red;
+         }

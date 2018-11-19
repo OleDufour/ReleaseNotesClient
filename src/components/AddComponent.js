@@ -22,9 +22,11 @@ export class AddComponent extends Component {
     }
 
     componentDidMount() {
-        //  alert('add did mount')
-     actions.getComments();
+        alert('add did mount')
+        actions.getComments();
         referenceStore.showNonReleaseInfo = true;
+        referenceStore.selectedCleTypeID = 0;
+        //  referenceStore.    referenceData.map((x)=>{x.selected=true; return x;});
     }
 
     // we are selecting a comment.
@@ -52,7 +54,7 @@ export class AddComponent extends Component {
         let releaseID = parseInt(ReferenceStore.selectedReleaseIDGet);
         let cleTypeID = parseInt(ReferenceStore.selectedCleTypeIDGet);
 
-        if (cleTypeID == 0) { this.setState({ validationMessageText: 'Please select a release type' }); return; }
+        if (cleTypeID == 0) { this.setState({ validationMessageText: 'Please select a type' }); return; }
         if (!countryCodesSelected || countryCodesSelected.length === 0) { this.setState({ validationMessageText: 'Please select one or more countries' }); return; }
         if (!environmentsSelected || environmentsSelected.length === 0) { this.setState({ validationMessageText: 'Please select one or more environments' }); return; }
         if (this.state.releaseNoteKey.trim() === '') { this.setState({ validationMessageText: 'Please specify a value for the key' }); return; }
@@ -76,45 +78,49 @@ export class AddComponent extends Component {
     }
 
     render() {
-        return (<div className="container mt-3">
-            {this.state.validationMessageText &&
-                <div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    &nbsp;&nbsp;{this.state.validationMessageText}
-                </div>
-            }
-            <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Select a comment (if you wish)</label>
-                    {CommentStore.comments && CommentStore.comments.length > 0 &&
-                        <div className="dropdown show">
-                            <select className="form-control js-DisplayOn valid" onChange={this.handleCommentChange} >
-                                {CommentStore.comments.map(com =>
-                                    <option key={com.id} value={com.id}>{com.name}</option>
-                                )};
-                              </select>
+        return (
+            <React.Fragment>
+
+                <div class="col-md-8">
+                    {this.state.validationMessageText &&
+                        <div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            &nbsp;&nbsp;{this.state.validationMessageText}
                         </div>
                     }
-                    <small id="emailHelp" class="form-text text-muted">A comment groups a set of release notes and is preceded by a # sign in the output file.</small>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Key</label>
-                    <input type="text" class="form-control" value={this.state.releaseNoteKey} onChange={this.handleReleaseNoteKeyChange} />
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Value</label>
-                    <input type="text" class="form-control" value={this.state.releaseNoteValue} onChange={this.handleReleaseNoteValueChange} class="form-control" />
-                    <small id="emailHelp" class="form-text text-muted">The value will be updated for keys that already exist.</small>
-                </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Select a comment (if you wish)</label>
+                            {CommentStore.comments && CommentStore.comments.length > 0 &&
+                                <div className="dropdown show">
+                                    <select className="form-control js-DisplayOn valid" onChange={this.handleCommentChange} >
+                                        {CommentStore.comments.map(com =>
+                                            <option key={com.id} value={com.id}>{com.name}</option>
+                                        )};
+                              </select>
+                                </div>
+                            }
+                            <small id="emailHelp" class="form-text text-muted">A comment groups a set of release notes and is preceded by a # sign in the output file.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Key</label>
+                            <input type="text" class="form-control" value={this.state.releaseNoteKey} onChange={this.handleReleaseNoteKeyChange} />
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Value</label>
+                            <input type="text" class="form-control" value={this.state.releaseNoteValue} onChange={this.handleReleaseNoteValueChange} class="form-control" />
+                            <small id="emailHelp" class="form-text text-muted">The value will be updated for keys that already exist.</small>
+                        </div>
 
 
 
-                <div class="container">
-                    <div class="row">
-                        <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">&nbsp;&nbsp;Save &nbsp;&nbsp;</button>
-                    </div>
-                </div>
-            </form>
-        </div >);
+                        <div class="container">
+                            <div class="row">
+                                <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">&nbsp;&nbsp;Save &nbsp;&nbsp;</button>
+                            </div>
+                        </div>
+                    </form>
+                </div >
+            </React.Fragment>);
     }
 }
 export default AddComponent;

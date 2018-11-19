@@ -31,8 +31,8 @@ function postReleaseNotes(commentID, releaseNoteText) {
    // alert(commentID + ' - ' + releaseNoteText);
     // todo create json here
 
-    var countryCodesDefault = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode");
-    console.log(countryCodesDefault.filter(x => x.selected === true).length);
+  //  var countryCodesDefault = ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "CountryCode");
+   // console.log(countryCodesDefault.filter(x => x.selected === true).length);
   //  var test = JSON.stringify(countryCodesDefault);
 //    console.log('**********stringification:', ReferenceStore.referenceDataDefault)
 

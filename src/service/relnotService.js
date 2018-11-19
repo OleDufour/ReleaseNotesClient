@@ -23,7 +23,7 @@ function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
       //console.log(response);
-      return response.data.map((x) => { x.selected = false; return x; });
+      return response.data.map((x) => { x.selected = true; return x; });
     })
     .catch(function (error) {
       alert(error);
@@ -84,8 +84,8 @@ function postReleaseNotes(releaseNote) {
     });
 }
 
-function updateReleaseNote(releaseNote) {
-  axios.put(config.apiUrl + '/api/ReleaseNote', releaseNote)
+async function updateReleaseNote(releaseNote) {
+ await axios.put(config.apiUrl + '/api/ReleaseNote', releaseNote)
     .then(function (response) {
       console.log("releasenote :", response);
 

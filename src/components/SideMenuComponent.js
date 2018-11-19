@@ -29,7 +29,7 @@ export default class SideMenuComponent extends Component {
    // alert(propertyName);
     var refID = event.target.value;
 
-
+alert (refID);
 
     //alert(refID)
     switch (propertyName) {
@@ -53,15 +53,17 @@ export default class SideMenuComponent extends Component {
     //  alert('clicked')
     referenceStore.referenceData.map(ref => {
       if (ref.propertyName == propertyName && ref.id == refID) {
-        // alert(value);
+        //  alert(value);
         ref.selected = value;
       }
     })
   }
 
   selectUnselectReferenceDataSingleSelect(propertyName, refID) {
+    alert(propertyName);
     referenceStore.referenceData.map(ref => {
       if (ref.propertyName == propertyName) {
+   
         ref.selected = ref.id == refID ? true : false;
       }
     })
@@ -76,7 +78,7 @@ export default class SideMenuComponent extends Component {
           <label for="selRelease">Release</label>
           <select id="selRelease" onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
             {referenceStore.releases.map(ref =>
-              <option key={ref.id} defaultValue={ref.id} value={ref.id}  data-refid={ref.id} >{ref.name} {ref.selected} </option>
+              <option key={ref.id} defaultValue={ref.id} value={ref.id}  data-refid={ref.id} >{ref.name}   </option>
             )};
          </select>
         </div>
@@ -87,8 +89,8 @@ export default class SideMenuComponent extends Component {
               <label for="selCleType">Type</label>
               <select id="selCleType" onChange={this.handleInputChangeSingleSelect} data-propertyname="CleType" className="form-control js-DisplayOn valid" >
                 {referenceStore.cleTypes.map(ref =>
-                  <option key={ref.id} selected={ref.selected} data-selected={ref.selected} defaultValue={ref.id}  value={ref.id} data-refid={ref.id}  >{ref.name}  {ref.selected}</option>
-                )};
+                  <option key={ref.id} selected={ref.selected} data-selected={ref.selected} defaultValue={ref.id}  value={ref.id} data-refid={ref.id}  >{ref.name}  </option>
+                )}
          </select>
             </div>
 
@@ -99,7 +101,7 @@ export default class SideMenuComponent extends Component {
                   <tr selected="selected" key={ref.id}>
                     <td>
                       <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} checked={ref.selected} ></input>
-                      &nbsp;&nbsp;{ref.name} {ref.selected.toString()}
+                      &nbsp;&nbsp;{ref.name} 
                     </td>
                   </tr>
                 )}
@@ -113,7 +115,7 @@ export default class SideMenuComponent extends Component {
                   <tr selected="selected" key={ref.id}>
                     <td>
                       <input type="checkbox" onChange={this.handleInputChangeMultiSelect} data-propertyname={ref.propertyName} data-refid={ref.id} defaultChecked={ref.selected} checked={ref.selected} ></input>
-                      &nbsp;&nbsp;{ref.name} {ref.selected.toString()}  </td>
+                      &nbsp;&nbsp;{ref.name}   </td>
                   </tr>
                 )}
               </table>

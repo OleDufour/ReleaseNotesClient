@@ -11,16 +11,9 @@ class NavBarComponent extends Component {
 
   }
 
-    addClicked=(event)=>{
- 
-referenceStore.    referenceData.map((x)=>{x.selected=true; return x;});
- 
- 
-  }
-
   render() {
     return <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand" href="#">fger</a>
+      <a className="appTitle navbar-brand  " href="#">Release note manager</a>
       <ul className="navbar-nav">
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active'  onClick={this.addClicked} to='/'>Add</NavLink>
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/comment'>Comment</NavLink>

@@ -9,9 +9,9 @@ class ReferenceStore {
   }
 
   @computed get cleTypes() {
-    var defaultValue = { id: 0, name: '' };
+   // var defaultValue = { id: 0, name: '' };
     var cleType = this.referenceData.filter(x => x.propertyName === "CleType");
-    cleType.unshift(defaultValue)
+   // cleType.unshift(defaultValue)
     return cleType;
   }
 
@@ -33,7 +33,7 @@ class ReferenceStore {
   // updated when we select a CleType :
   @observable selectedCleTypeID = 0;
   @computed get selectedCleTypeIDGet() {
-    return this.selectedCleTypeID == 0 ? this.cleTypes[0].id : this.selectedCleTypeID;
+    return this.selectedCleTypeID == 0 ? this.cleTypes[1].id : this.selectedCleTypeID;
   }
 
 

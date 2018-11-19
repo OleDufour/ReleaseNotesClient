@@ -94,6 +94,8 @@ export class ListComponent extends Component {
         var countryCodesSelected = referenceStore.countryCodesDefault.filter(x => x.selected === true).map(a => a.id);
         var environmentsSelected = referenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
         let releaseID = parseInt(referenceStore.selectedReleaseIDGet);
+        let cleTypeID = parseInt(referenceStore.selectedCleTypeIDGet);
+
 
 
         var releaseNoteParms = {};
@@ -101,14 +103,21 @@ export class ListComponent extends Component {
 
         releaseNoteParms.ReleaseNoteId = releaseNoteId;
         releaseNoteParms["ReleaseId"] = releaseID;
-        releaseNoteParms.CleTypeId = this.state.currentCleTypeId;
+        releaseNoteParms.CleTypeId = cleTypeID;
         releaseNoteParms["CountryCodeId"] = countryCodesSelected;
         releaseNoteParms["EnvironmentId"] = environmentsSelected;
         releaseNoteParms["KeyName"] = this.state.currentReleasenoteKey;
         releaseNoteParms["Value"] = this.state.currentReleasenoteValue;
 
-          relnotService.updateReleaseNote(releaseNoteParms);
-      
+        // alert(this.state.currentCleTypeId)
+
+        relnotService.updateReleaseNote(releaseNoteParms).then(result => {
+
+            releaseNoteStore.updateReleaseNote(releaseNoteId, releaseNoteParms)
+            releaseNoteStore.allReleaseNotes.map(x => { x.modification = false; }); // exit edit mode
+            referenceStore.showNonReleaseInfo = false; // hide non release reference divs
+        });
+
 
         event.preventDefault();
     }
@@ -116,12 +125,15 @@ export class ListComponent extends Component {
     modifyReleaseNoteKey = (event) => { this.setState({ currentReleasenoteKey: event.target.value }); }
     modifyReleaseNoteValue = (event) => { this.setState({ currentReleasenoteValue: event.target.value }); }
 
+
     deleteReleaseNoteKey = (event) => {
         let keyName = event.target.attributes.getNamedItem('data-keyname').value;
         //alert(keyName);
         releaseNoteStore.deleteReleaseNoteKey(keyName);
     }
 
+
+    // To display in grid :
     typeName = (cleTypeId) => {
         var cleType = '';
         referenceStore.cleTypes.map(x => {
@@ -148,7 +160,7 @@ export class ListComponent extends Component {
         });
         return environments.trim().slice(0, -1);
     }
-
+    // End to display in grid
 
     render() {
         return (<div  >
@@ -158,7 +170,7 @@ export class ListComponent extends Component {
             </div>
             {
                 releaseNoteStore.allReleaseNotes && releaseNoteStore.allReleaseNotes.length > 0 &&
-                <table class="table" class="table table-striped table-bordered ">
+                <table id="releaseNotesList" class="table" class="table table-striped table-bordered table-fixed ">
                     <thead>
                         <tr>
                             <th>Key</th>
@@ -166,24 +178,25 @@ export class ListComponent extends Component {
                             <th>Countries</th>
                             <th>Environments</th>
                             <th>Value</th>
+                            <th>Value</th>
                         </tr>
                     </thead>
                     <tbody>
                         {releaseNoteStore.allReleaseNotes.map(r =>
                             <tr>
-                                {/* <div selected="selected" key={r.id}> */}
-                                <td>
+
+                                <td >
                                     {r.modification && <input onChange={this.modifyReleaseNoteKey} defaultValue={r.keyName} class="form-control" />}
                                     {!r.modification && r.keyName}
                                 </td>
-                                <td>{this.typeName(r.cleTypeId)}</td>
-                                <td>{this.countryNames(r.countryCodeId)}</td>
-                                <td>{this.environmentNames(r.environmentId)}</td>
-                                <td>
+                                <td >{this.typeName(r.cleTypeId)}</td>
+                                <td >{this.countryNames(r.countryCodeId)}</td>
+                                <td >{this.environmentNames(r.environmentId)}</td>
+                                <td >
                                     {r.modification && <input onChange={this.modifyReleaseNoteValue} defaultValue={r.value} class="form-control" />}
                                     {!r.modification && r.value}
                                 </td>
-                                <td>
+                                <td >
                                     {!r.modification &&
                                         <React.Fragment>
                                             <button onClick={this.startModifyingReleaseNoteKey}
