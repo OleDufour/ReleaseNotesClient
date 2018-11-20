@@ -7,6 +7,7 @@ import referenceStore from '../store/ReferenceStore';
 import releaseNoteStore from '../store/ReleaseNoteStore';
 
 import { relnotService } from '../service/relnotService';
+import commentStore from '../store/CommentStore';
 
 @observer
 export class ListComponent extends Component {
@@ -27,12 +28,16 @@ export class ListComponent extends Component {
         // let rc = iMap(referenceStore)
         // console.log("Values of observables in class 'referenceClass' ", rc.toJS());
         referenceStore.showNonReleaseInfo = false;
+        if ( commentStore.allComments.length===0) actions.getComments();       
     }
 
     componentDidUpdate() {
     }
 
     searchReleaseNoteKey = (event) => {
+
+       // if (event.target.value.length<3)return;
+
         referenceStore.showNonReleaseInfo = false;
         console.log('commentid: ' + this.state.commentID);
 
@@ -60,7 +65,7 @@ export class ListComponent extends Component {
         this.setState({ currentReleasenoteId: event.target.attributes.getNamedItem('data-releasenoteid').value });
         this.setState({ currentCleTypeId: parseInt(event.target.attributes.getNamedItem('data-cletypeid').value) });
         this.setState({ currentReleasenoteKey: event.target.attributes.getNamedItem('data-keyname').value });
-        this.setState({ currentReleasenoteValue: event.target.attributes.getNamedItem('data-keyname').value });
+        this.setState({ currentReleasenoteValue: event.target.attributes.getNamedItem('data-value').value });
 
         var countrycodeidArray = countrycodeid.split(',');
         var environmentidArray = environmentid.split(',');
@@ -96,8 +101,6 @@ export class ListComponent extends Component {
         let releaseID = parseInt(referenceStore.selectedReleaseIDGet);
         let cleTypeID = parseInt(referenceStore.selectedCleTypeIDGet);
 
-
-
         var releaseNoteParms = {};
         console.log('commentid: ' + this.state.commentID);
 
@@ -109,10 +112,7 @@ export class ListComponent extends Component {
         releaseNoteParms["KeyName"] = this.state.currentReleasenoteKey;
         releaseNoteParms["Value"] = this.state.currentReleasenoteValue;
 
-        // alert(this.state.currentCleTypeId)
-
         relnotService.updateReleaseNote(releaseNoteParms).then(result => {
-
             releaseNoteStore.updateReleaseNote(releaseNoteId, releaseNoteParms)
             releaseNoteStore.allReleaseNotes.map(x => { x.modification = false; }); // exit edit mode
             referenceStore.showNonReleaseInfo = false; // hide non release reference divs
@@ -125,13 +125,10 @@ export class ListComponent extends Component {
     modifyReleaseNoteKey = (event) => { this.setState({ currentReleasenoteKey: event.target.value }); }
     modifyReleaseNoteValue = (event) => { this.setState({ currentReleasenoteValue: event.target.value }); }
 
-
     deleteReleaseNoteKey = (event) => {
         let keyName = event.target.attributes.getNamedItem('data-keyname').value;
-        //alert(keyName);
         releaseNoteStore.deleteReleaseNoteKey(keyName);
     }
-
 
     // To display in grid :
     typeName = (cleTypeId) => {
@@ -160,6 +157,17 @@ export class ListComponent extends Component {
         });
         return environments.trim().slice(0, -1);
     }
+    comment = (commentId) => {
+        var comment = '';
+        commentStore.allComments.map(x => {
+            if (commentId == x.id)
+                comment = x.name;
+        });
+        return comment;
+
+
+    }
+
     // End to display in grid
 
     render() {
@@ -184,7 +192,6 @@ export class ListComponent extends Component {
                     <tbody>
                         {releaseNoteStore.allReleaseNotes.map(r =>
                             <tr>
-
                                 <td >
                                     {r.modification && <input onChange={this.modifyReleaseNoteKey} defaultValue={r.keyName} class="form-control" />}
                                     {!r.modification && r.keyName}
@@ -196,6 +203,7 @@ export class ListComponent extends Component {
                                     {r.modification && <input onChange={this.modifyReleaseNoteValue} defaultValue={r.value} class="form-control" />}
                                     {!r.modification && r.value}
                                 </td>
+                                <td>{this.comment(r.commentId)}</td>
                                 <td >
                                     {!r.modification &&
                                         <React.Fragment>
@@ -204,9 +212,12 @@ export class ListComponent extends Component {
                                                 data-cletypeid={r.cleTypeId}
                                                 data-countrycodeid={r.countryCodeId}
                                                 data-environmentid={r.environmentId}
-                                                data-keyname={r.keyName} title="Modifier" className="btnGrid btn-primary content-modify-link" >
+                                                data-keyname={r.keyName}
+                                                data-value={r.value}
+                                                title="Modifier" className="btnGrid btn-primary content-modify-link" >
                                                 <span
                                                     data-keyname={r.keyName}
+                                                    data-value={r.value}
                                                     data-cletypeid={r.cleTypeId}
                                                     data-countrycodeid={r.countryCodeId}
                                                     data-environmentid={r.environmentId}
@@ -217,7 +228,9 @@ export class ListComponent extends Component {
                                                         data-countrycodeid={r.countryCodeId}
                                                         data-environmentid={r.environmentId}
                                                         data-releasenoteid={r.releaseNoteId}
-                                                        data-keyname={r.keyName} class='test'>&nbsp;&nbsp;Modify  </span></span>
+                                                        data-keyname={r.keyName}
+                                                        data-value={r.value}
+                                                        class='test'>&nbsp;&nbsp;Modify  </span></span>
                                             </button>  &nbsp;&nbsp;
                                         </React.Fragment>
                                     }
@@ -228,13 +241,14 @@ export class ListComponent extends Component {
                                                 data-countrycodeid={r.countryCodeId}
                                                 data-releasenoteid={r.releaseNoteId}
                                                 data-keyname={r.keyName}
+                                                data-value={r.value}
                                                 title="Modifier" className="btnGrid btn-primary content-modify-link" >
                                                 <span
                                                     data-cletypeid={r.cleTypeId}
                                                     data-countrycodeid={r.countryCodeId}
                                                     data-environmentid={r.environmentId}
                                                     data-releasenoteid={r.releaseNoteId}
-                                                    class="fa fa-save"><span data-releasenoteid={r.releaseNoteId} data-keyname={r.keyName} class='test'>&nbsp;&nbsp;Save  </span></span>
+                                                    class="fa fa-save"><span data-releasenoteid={r.releaseNoteId} data-keyname={r.keyName} data-value={r.value} class='test'>&nbsp;&nbsp;Save  </span></span>
                                             </button> &nbsp;&nbsp;
                                         </React.Fragment>
                                     }

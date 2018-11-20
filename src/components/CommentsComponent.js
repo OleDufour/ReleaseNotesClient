@@ -5,7 +5,7 @@ import { actions } from '../actions/referenceData';
 import { relnotService } from '../service/relnotService';
 import referenceStore from '../store/ReferenceStore';
 import commentStore from '../store/CommentStore';
-import   commentActions  from '../actions/CommentActions';
+import commentActions from '../actions/CommentActions';
 
 @observer
 class CommentComponent extends Component {
@@ -38,6 +38,9 @@ class CommentComponent extends Component {
     }
 
     delete = (event) => {
+
+     
+
         this.setState({ currentCommentId: parseInt(event.target.attributes.getNamedItem('data-id').value) });
         this.setState({ currentCommentName: event.target.attributes.getNamedItem('data-name').value });
         this.setState({ fetchNew: true });
@@ -45,7 +48,7 @@ class CommentComponent extends Component {
         let id = parseInt(event.target.attributes.getNamedItem('data-id').value);
 
         relnotService.deleteComment(id).then(result => {
-          //  alert('return!')
+            //  alert('return!')
             commentStore.commentData = commentStore.commentData.filter(obj => obj.id !== id);
         }).catch(err => {
         });
@@ -78,9 +81,9 @@ class CommentComponent extends Component {
         alert(id + ' ' + name);
         let comment = { id: id, name: name };
         relnotService.updateComment(comment).then(result => {
-            
+
             commentStore.updateComment(id, name)
-         
+
             commentStore.allComments.map(x => { x.modification = false; });
         });
     }
@@ -90,13 +93,16 @@ class CommentComponent extends Component {
         return (
             <React.Fragment>
                 <div class="col-md-8">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
-                        </div>
-                        <input type="text" value={this.state.value} onChange={this.setNewValue} class="form-control" />
-                        <div class="input-group-append">
-                            <button type="button" onClick={this.add} class="btn btn-primary" >Save comment</button>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Add a new comment</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Add</span>
+                            </div>
+                            <input type="text" value={this.state.value} onChange={this.setNewValue} class="form-control" />
+                            <div class="input-group-append">
+                                <button type="button" onClick={this.add} class="btn btn-primary" >Save comment</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,7 +154,7 @@ class CommentComponent extends Component {
                                     </React.Fragment>
                                         }
 
-                                        <button data-id={x.id} data-name={x.name} onClick={this.delete} title="Supprimer" className="btnGrid btn-primary btn-warning  "  >
+                                        <button data-id={x.id} data-name={x.name} onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.delete(e) }} title="Supprimer" className="btnGrid btn-primary btn-warning  "  >
                                             <span data-id={x.id} data-name={x.name} data-keyname={x.keyName} class="fa fa-trash"><span data-id={x.id} data-name={x.name} class='test'>&nbsp;&nbsp;Delete </span> </span>
                                         </button>
                                     </td>

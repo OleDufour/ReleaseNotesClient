@@ -19,8 +19,7 @@ class ReleaseNoteStore {
                 p.keyName = releaseNote.KeyName;
                 p.countryCodeId = releaseNote.CountryCodeId;
                 p.environmentId = releaseNote.EnvironmentId;
-                p.cleTypeId = releaseNote.CleTypeId;
-                // alert('CleTypeId  ' + releaseNote.CleTypeId)
+                p.cleTypeId = releaseNote.CleTypeId;    
             }
         });
     }

@@ -22,7 +22,7 @@ export class AddComponent extends Component {
     }
 
     componentDidMount() {
-        alert('add did mount')
+        //alert('add did mount')
         actions.getComments();
         referenceStore.showNonReleaseInfo = true;
         referenceStore.selectedCleTypeID = 0;
@@ -62,7 +62,7 @@ export class AddComponent extends Component {
         this.setState({ validationMessageText: null });
 
         var releaseNoteParms = {};
-        console.log('commentid: ' + this.state.commentID);
+        alert('commentid: ' + this.state.commentID);
 
         releaseNoteParms.ReleaseNoteId = 0;
         releaseNoteParms["ReleaseId"] = releaseID;
@@ -110,9 +110,6 @@ export class AddComponent extends Component {
                             <input type="text" class="form-control" value={this.state.releaseNoteValue} onChange={this.handleReleaseNoteValueChange} class="form-control" />
                             <small id="emailHelp" class="form-text text-muted">The value will be updated for keys that already exist.</small>
                         </div>
-
-
-
                         <div class="container">
                             <div class="row">
                                 <button onClick={this.handleReleaseNoteSave} class="btn btn-primary" type="button">&nbsp;&nbsp;Save &nbsp;&nbsp;</button>

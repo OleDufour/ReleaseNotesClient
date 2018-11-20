@@ -56,7 +56,7 @@ body {
 
 
 #releaseNotesList   tbody{
-    height:600px;
+    height:700px;
     overflow-y:auto;
     width: 100%;
     }
@@ -110,12 +110,13 @@ body {
       }
 
 
-      #releaseNotesList td:nth-child(1){width:30%;}
+      #releaseNotesList td:nth-child(1){width:20%;}
       #releaseNotesList td:nth-child(2){width:8%;}     
-     #releaseNotesList td:nth-child(3){width:8%;}
-     #releaseNotesList td:nth-child(4){width:10%;}
-      #releaseNotesList td:nth-child(5){width:30%;}
+     #releaseNotesList td:nth-child(3){width:5%;}
+     #releaseNotesList td:nth-child(4){width:5%;}
+      #releaseNotesList td:nth-child(5){width:20%;}
       #releaseNotesList td:nth-child(6){width:11%;}
+      #releaseNotesList td:nth-child(7){width:11%;}
 
       #releaseNotesList  th:last-child,
       #releaseNotesList  td:last-child,
@@ -142,3 +143,7 @@ body {
     
             color:red;
          }
+
+
+
+         .btn{min-width: 90px;;}

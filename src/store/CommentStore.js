@@ -12,6 +12,9 @@ class CommentStore {
 
     @computed get allComments() { return this.commentData }
 
+
+
+    
     @computed get comments() {
         var defaultValue = { id: 0, name: '' };
         // = unshift, yet immutable: 
