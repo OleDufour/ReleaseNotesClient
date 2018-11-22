@@ -21,7 +21,7 @@ class ReferenceStore {
   @computed get environmentsDefault() { return this.referenceData.filter(x => x.propertyName === "Environment"); }
   // @computed get environments() { return this.referenceData.filter(x => x.propertyName === "Environment"); }
 
-
+// CAN GO ??????????????????????????????????????????
   @computed get referenceDataDefault() { return this.referenceData.map((obj) => { obj.propertyName == "Release" || obj.propertyName == "CleType" ? obj.selected = false : obj.selected = true; return obj; }) }
 
   // updated when we select a Release :
