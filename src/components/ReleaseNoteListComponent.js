@@ -28,7 +28,7 @@ export class ListComponent extends Component {
         // let rc = iMap(referenceStore)
         // console.log("Values of observables in class 'referenceClass' ", rc.toJS());
         referenceStore.showNonReleaseInfo = false;
-        if ( commentStore.allComments.length===0) actions.getComments();       
+        if (commentStore.allComments.length === 0) actions.getComments();
     }
 
     componentDidUpdate() {
@@ -36,7 +36,7 @@ export class ListComponent extends Component {
 
     searchReleaseNoteKey = (event) => {
 
-       // if (event.target.value.length<3)return;
+        // if (event.target.value.length<3)return;
 
         referenceStore.showNonReleaseInfo = false;
         console.log('commentid: ' + this.state.commentID);
@@ -61,6 +61,9 @@ export class ListComponent extends Component {
         let cletypeid = event.target.attributes.getNamedItem('data-cletypeid').value;
         let countrycodeid = event.target.attributes.getNamedItem('data-countrycodeid').value;
         let environmentid = event.target.attributes.getNamedItem('data-environmentid').value;
+        let commentId = event.target.attributes.getNamedItem('data-commentid') ? event.target.attributes.getNamedItem('data-commentid').value : null;
+        console.log('commentIdddddddddddd', commentId)
+
 
         this.setState({ currentReleasenoteId: event.target.attributes.getNamedItem('data-releasenoteid').value });
         this.setState({ currentCleTypeId: parseInt(event.target.attributes.getNamedItem('data-cletypeid').value) });
@@ -80,18 +83,25 @@ export class ListComponent extends Component {
 
         // set sidemenu to selected
         referenceStore.referenceData.map(r => {
-            if (r.propertyName === "CleType") r.selected = r.id == cletypeid ? true : false;
-            else if (r.propertyName === "CountryCode") {
-                countrycodeidArray.map(c => {
-                    if (c == r.id) r.selected = true;
-                })
-            }
-            else if (r.propertyName === "Environment") {
-                environmentidArray.map(c => {
-                    if (c == r.id) r.selected = true;
-                })
+            switch (r.propertyName) {
+                case "CleType":
+                    r.selected = r.id == cletypeid ? true : false; break;
+                case "CountryCode":
+                    countrycodeidArray.map(c => {
+                        if (c == r.id) r.selected = true;
+                    }); break;
+                case "Environment":
+                    environmentidArray.map(c => {
+                        if (c == r.id) r.selected = true;
+                    }); break;
+
             }
         });
+
+        commentStore.updateCommentSelected(commentId);
+
+        
+
     }
 
     saveReleaseNote = (event) => {
@@ -100,6 +110,7 @@ export class ListComponent extends Component {
         var environmentsSelected = referenceStore.environmentsDefault.filter(x => x.selected === true).map(a => a.id);
         let releaseID = parseInt(referenceStore.selectedReleaseIDGet);
         let cleTypeID = parseInt(referenceStore.selectedCleTypeIDGet);
+
 
         var releaseNoteParms = {};
         console.log('commentid: ' + this.state.commentID);
@@ -111,6 +122,7 @@ export class ListComponent extends Component {
         releaseNoteParms["EnvironmentId"] = environmentsSelected;
         releaseNoteParms["KeyName"] = this.state.currentReleasenoteKey;
         releaseNoteParms["Value"] = this.state.currentReleasenoteValue;
+        releaseNoteParms.CommentId = commentStore.selectedCommentId; // can be null
 
         relnotService.updateReleaseNote(releaseNoteParms).then(result => {
             releaseNoteStore.updateReleaseNote(releaseNoteId, releaseNoteParms)
@@ -199,7 +211,7 @@ export class ListComponent extends Component {
                                 <td >{this.typeName(r.cleTypeId)}</td>
                                 <td >{this.countryNames(r.countryCodeId)}</td>
                                 <td >{this.environmentNames(r.environmentId)}</td>
-                                <td >
+                                <td >wwwwwwwwwwwwww{r.commentId}wwwwwwwwww
                                     {r.modification && <input onChange={this.modifyReleaseNoteValue} defaultValue={r.value} class="form-control" />}
                                     {!r.modification && r.value}
                                 </td>
@@ -212,6 +224,7 @@ export class ListComponent extends Component {
                                                 data-cletypeid={r.cleTypeId}
                                                 data-countrycodeid={r.countryCodeId}
                                                 data-environmentid={r.environmentId}
+                                                data-commentid={r.commentId}
                                                 data-keyname={r.keyName}
                                                 data-value={r.value}
                                                 title="Modifier" className="btnGrid btn-primary content-modify-link" >
@@ -221,12 +234,14 @@ export class ListComponent extends Component {
                                                     data-cletypeid={r.cleTypeId}
                                                     data-countrycodeid={r.countryCodeId}
                                                     data-environmentid={r.environmentId}
+                                                    data-commentid={r.commentId}
                                                     data-releasenoteid={r.releaseNoteId}
                                                     class="fa fa-pencil">
                                                     <span
                                                         data-cletypeid={r.cleTypeId}
                                                         data-countrycodeid={r.countryCodeId}
                                                         data-environmentid={r.environmentId}
+                                                        data-commentid={r.commentId}
                                                         data-releasenoteid={r.releaseNoteId}
                                                         data-keyname={r.keyName}
                                                         data-value={r.value}
@@ -240,6 +255,7 @@ export class ListComponent extends Component {
                                                 data-cletypeid={r.cleTypeId}
                                                 data-countrycodeid={r.countryCodeId}
                                                 data-releasenoteid={r.releaseNoteId}
+                                                data-commentid={r.commentId}
                                                 data-keyname={r.keyName}
                                                 data-value={r.value}
                                                 title="Modifier" className="btnGrid btn-primary content-modify-link" >
@@ -247,8 +263,10 @@ export class ListComponent extends Component {
                                                     data-cletypeid={r.cleTypeId}
                                                     data-countrycodeid={r.countryCodeId}
                                                     data-environmentid={r.environmentId}
+                                                    data-commentid={r.commentId}
                                                     data-releasenoteid={r.releaseNoteId}
-                                                    class="fa fa-save"><span data-releasenoteid={r.releaseNoteId} data-keyname={r.keyName} data-value={r.value} class='test'>&nbsp;&nbsp;Save  </span></span>
+                                                    data-commentid={r.commentId}
+                                                    class="fa fa-save"><span data-releasenoteid={r.releaseNoteId} data-commentid={r.commentId} data-keyname={r.keyName} data-value={r.value} class='test'>&nbsp;&nbsp;Save  </span></span>
                                             </button> &nbsp;&nbsp;
                                         </React.Fragment>
                                     }

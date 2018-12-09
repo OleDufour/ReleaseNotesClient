@@ -45,7 +45,7 @@ async function addComment(comment) {
 function getComments() {
   return axios.get(config.apiUrl + '/api/Comment')
     .then(response => {
-      return response.data.map((x) => { x.modification = false; return x; });
+      return response.data.map((x) => {x.selected=false; x.modification = false; return x; });
     })
     .catch(function (error) {
       alert(error);

@@ -36,6 +36,9 @@ export default class SideMenuComponent extends Component {
         referenceStore.selectedReleaseID = refID; break;
       case "CleType":
         referenceStore.selectedCleTypeID = refID; break;
+      case "Comment":
+        alert(refID);
+        commentStore.updateSelectedCommentId(refID); break;
     }
   }
 
@@ -121,10 +124,10 @@ export default class SideMenuComponent extends Component {
             </div>
 
             <div class="form-group">
-              <label for="selRelease">Comments</label>
-              <select id="selRelease" onChange={this.handleInputChangeSingleSelect} data-propertyname="Release" className="form-control js-DisplayOn valid">
-                {commentStore.comments.map(ref =>
-                  <option key={ref.id} defaultValue={ref.id} value={ref.id} data-refid={ref.id} >{ref.name}   </option>
+              <label for="selComment">Comments</label>
+              <select id="selComment" onChange={this.handleInputChangeSingleSelect} data-propertyname="Comment" className="form-control js-DisplayOn valid">
+                {  commentStore.comments  && commentStore.comments.map(ref =>
+                  <option key={ref.id} selected={ref.selected} data-selected={ref.selected}  defaultValue={ref.id} value={ref.id} data-refid={ref.id} >{ref.name} {ref.selected }  </option>
                 )};
                </select>
             </div>
