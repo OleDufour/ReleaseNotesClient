@@ -20,6 +20,7 @@ class NavBarComponent extends Component {
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/preview'>Preview</NavLink>
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/download'>Download</NavLink>
         <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/admin'>Admin</NavLink>
+        <NavLink exact={true} className="nav-link" activeClassName='nav-item active' to='/paging'>Paging</NavLink>
       </ul>
     </nav>;
   }

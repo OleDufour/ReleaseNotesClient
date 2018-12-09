@@ -16,6 +16,8 @@ import NavBarComponent from './NavBarComponent';
 import SideMenuComponent from './SideMenuComponent';
 import ReleaseNoteListComponent from './ReleaseNoteListComponent';
 import DownloadComponent from './DownloadComponent';
+import PagingComponent from './PagingComponent'
+
 
 import './App.css';
 
@@ -56,6 +58,7 @@ class App extends Component {
                 <Route path="/comment" component={CommentComponent} />
                 <Route path="/preview" component={ReleaseNoteListComponent} />
                 <Route path="/download" component={DownloadComponent} />
+                <Route path="/paging" component={PagingComponent} />
               </div>
 
 
