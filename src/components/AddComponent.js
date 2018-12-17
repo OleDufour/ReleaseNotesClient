@@ -20,6 +20,11 @@ export class AddComponent extends Component {
 
         };
     }
+    static getDerivedStateFromProps(props, state) {
+        // gewoon om te experimenteren
+        console.log('props: ', props)
+        console.log('state:', state)
+    }
 
     componentDidMount() {
         //alert('add did mount')
