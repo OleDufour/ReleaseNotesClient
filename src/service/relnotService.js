@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../config'
+import PropTypes from 'prop-types';
 
 // used in actions/referenceData
 export const relnotService = {
@@ -19,6 +20,11 @@ export const relnotService = {
 }
 
 
+const propTypeTest = {
+  username: PropTypes.number.isRequired
+}
+
+
 function getReferenceData() {
   return axios.get(config.apiUrl + '/api/Config')
     .then(response => {
@@ -29,10 +35,27 @@ function getReferenceData() {
       alert(error);
     })
 }
+function Car(make, model, year) {
+  this.make = make;
+  this.model = model;
+  if (typeof year != 'number')
+    alert(year + 'is not a numberr');
+ 
+  this.year = year;
+};
+
+
 
 
 // Comments
 async function addComment(comment) {
+  if (typeof comment != 'number')
+    alert('pas un entier !');
+
+    var auto = new Car('Honda', 'Accord', '1998');
+
+alert (auto instanceof Car);
+
   await axios.post(config.apiUrl + '/api/Comment', comment)
     .then(response => {
       comment.id = response.data.id;
@@ -45,7 +68,7 @@ async function addComment(comment) {
 function getComments() {
   return axios.get(config.apiUrl + '/api/Comment')
     .then(response => {
-      return response.data.map((x) => {x.selected=false; x.modification = false; return x; });
+      return response.data.map((x) => { x.selected = false; x.modification = false; return x; });
     })
     .catch(function (error) {
       alert(error);
@@ -85,7 +108,7 @@ function postReleaseNotes(releaseNote) {
 }
 
 async function updateReleaseNote(releaseNote) {
- await axios.put(config.apiUrl + '/api/ReleaseNote', releaseNote)
+  await axios.put(config.apiUrl + '/api/ReleaseNote', releaseNote)
     .then(function (response) {
       console.log("releasenote :", response);
 
