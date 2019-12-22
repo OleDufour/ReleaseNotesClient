@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
+
 import { observer } from "mobx-react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { BrowserRouter } from 'react-router-dom';
 
 
-import logo from './../logo.svg';
-import { actions } from './../actions/referenceData';
+import logo from './logo.svg';
+import { actions } from './actions/referenceData';
 
 
-import AddComponent from './AddComponent';
-import CommentComponent from './CommentsComponent';
+import AddComponent from './components/AddComponent';
+import CommentComponent from './components/CommentsComponent';
 // components
-import NavBarComponent from './NavBarComponent';
-import SideMenuComponent from './SideMenuComponent';
-import ReleaseNoteListComponent from './ReleaseNoteListComponent';
-import DownloadComponent from './DownloadComponent';
-import PagingComponent from './PagingComponent'
+import NavBarComponent from './components/NavBarComponent';
+import SideMenuComponent from './components/SideMenuComponent';
+import ReleaseNoteListComponent from './components/ReleaseNoteListComponent';
+import DownloadComponent from './components/DownloadComponent';
+import PagingComponent from './components/PagingComponent'
 
 
-import './App.css';
+import './components/App.css';
+
+import modules from './modules'; // All the parent knows is that it has modules ...
+
 
 @observer
 class App extends Component {
@@ -42,6 +46,8 @@ class App extends Component {
 
 
   render() {
+
+
     return (
       <div class="container-fluid">
         <BrowserRouter>
@@ -59,7 +65,19 @@ class App extends Component {
                 <Route path="/preview" component={ReleaseNoteListComponent} />
                 <Route path="/download" component={DownloadComponent} />
                 <Route path="/paging" component={PagingComponent} />
+
+
+
+
+              
+
+
+
+                {modules.map(module => (
+                  <Route {...module.routeProps} key={module.name} />
+                ))}
               </div>
+
 
 
             </div>
