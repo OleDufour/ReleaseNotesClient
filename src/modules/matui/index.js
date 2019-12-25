@@ -1,42 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 import ReferenceStore from '../../store/ReferenceStore';
+import { relnotService } from '../../service/relnotService';
 
-var data=null;
+function matui() {
+  const [state, setState] = React.useState({});
 
-function componentDidMount() {
+  useEffect(() => {
+ 
+    const cols = {
+      columns: [
+        { title: 'Name', field: 'name' },
+        { title: 'Surname', field: 'surname' },
+        { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+        {
+          title: 'Birth Place',
+          field: 'birthCity',
+          lookup: { 34: 'Rotterdam', 63: 'amsterdam' },
+        },
+      ]
+    };
 
-    data=  ReferenceStore.getAllReferenceData();
+    const dat = { data: [] };
+    relnotService.getReferenceData().then(response => {
+      dat.data = response;
+      var coldat = { ...cols, ...dat };
+      console.log(coldat)
+      setState(coldat);     
+    })
+  }, []); // let op, je moet die lege array toevoegen, zo niet, endless loop!
 
-    // alert(referenceStore.showNonReleaseInfo);
-  }
-
-    function matui() {
-
-       // ReferenceStore.referenceDataDefault.filter(x => x.propertyName === "Release")
-  const [state, setState] = React.useState({
-    columns: [
-      { title: 'Name', field: 'name' },
-      { title: 'Surname', field: 'surname' },
-      { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-      {
-        title: 'Birth Place',
-        field: 'birthCity',
-        lookup: { 34: 'Rotterdam', 63: 'amsterdam' },
-      },
-    ],
-    data: [
-      { name: 'jansen', surname: 'kees', birthYear: 1987, birthCity: 63 },
-      {
-        name: ' ole',
-        surname: 'dufour',
-        birthYear: 2017,
-        birthCity: 34,
-      },
-    ],
-  });
-
-  state.data=data;
   return (
     <MaterialTable
       title="Editable Example"
@@ -84,9 +77,9 @@ function componentDidMount() {
 }
 
 export default {
-    routeProps: {
-        path: '/matuitable',
-        component: matui
-    },
-    name: 'Material UI table',
+  routeProps: {
+    path: '/matuitable',
+    component: matui
+  },
+  name: 'Material UI table',
 }
